@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model LeaderboardElite {
+  id          Int      @id @default(autoincrement())
+  name        String
+  title       String   @default("FAKE PLAYER")
+  pointsEarned Decimal @db.Decimal(10, 2) @default(0)
+  pointsPerLoss Decimal @db.Decimal(10, 2) @default(0)
+  badge       String   @default("")
+  avatar      String   @default("https://planet-tracker.org/wp-content/uploads/2022/02/fact.jpg")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("leaderboard_elite")
+}
+
+model LeaderboardHunter {
+  id          Int      @id @default(autoincrement())
+  name        String
+  title       String   @default("FAKE PLAYER")
+  pointsEarned Decimal @db.Decimal(10, 2) @default(0)
+  badge       String   @default("")
+  avatar      String   @default("https://planet-tracker.org/wp-content/uploads/2022/02/fact.jpg")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("leaderboard_hunter")
+} 
