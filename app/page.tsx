@@ -18,8 +18,39 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="py-4 bg-[#0d1117] text-center text-gray-400 text-sm border-t border-gray-800">
-        &copy; {new Date().getFullYear()} Seekers of Tokane. All rights reserved.
+      <footer className="py-4 bg-[#0d1117] border-t border-gray-800">
+        <div className="max-w-[1400px] mx-auto px-4 flex justify-between items-center text-gray-400 text-sm">
+          <div>
+            <a 
+              href="https://x.com/chocoo_web3" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="hover:text-gray-300 transition-colors"
+            >
+              made by Chocoo
+            </a>
+          </div>
+          <div>
+            <a 
+              href="https://app.daory.io" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="hover:text-gray-300 transition-colors"
+            >
+              © 2025 DAOry
+            </a>
+          </div>
+          <div>
+            <a 
+              href="https://aurory.io" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="hover:text-gray-300 transition-colors"
+            >
+              powered by Aurory
+            </a>
+          </div>
+        </div>
       </footer>
     </div>
   );
