@@ -109,7 +109,10 @@ export default function LeaderboardPage() {
     return (
       <div className="w-full max-w-[1400px] mx-auto">
         <div className="flex items-center justify-center h-64">
-          <div className="text-gray-400">Loading leaderboard data...</div>
+          <div className="text-gray-400 flex items-center gap-3">
+            <div className="w-6 h-6 border-2 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+            Loading leaderboard data...
+          </div>
         </div>
       </div>
     );
@@ -119,7 +122,9 @@ export default function LeaderboardPage() {
     return (
       <div className="w-full max-w-[1400px] mx-auto">
         <div className="flex items-center justify-center h-64">
-          <div className="text-red-400">Error: {error}</div>
+          <div className="text-red-400 bg-red-900/20 px-4 py-3 rounded-lg border border-red-800">
+            Error: {error}
+          </div>
         </div>
       </div>
     );
@@ -129,7 +134,9 @@ export default function LeaderboardPage() {
     return (
       <div className="w-full max-w-[1400px] mx-auto">
         <div className="flex items-center justify-center h-64">
-          <div className="text-gray-400">No data available</div>
+          <div className="text-gray-400 bg-gray-800/20 px-4 py-3 rounded-lg border border-gray-700">
+            No data available
+          </div>
         </div>
       </div>
     );
@@ -140,133 +147,177 @@ export default function LeaderboardPage() {
 
   return (
     <div className="w-full max-w-[1400px] mx-auto">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* First Leaderboard */}
-        <div className="bg-[#0d1117] rounded-lg overflow-hidden border border-gray-800">
-          <div className="bg-[#1a1f2b] px-6 py-4 border-b border-gray-800">
-            <h2 className="text-xl text-center font-semibold text-gray-200">Elite</h2>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Elite Leaderboard */}
+        <div className="bg-gradient-to-br from-purple-900/20 to-purple-800/10 rounded-xl overflow-hidden border border-purple-500/20 shadow-xl backdrop-blur-sm">
+          <div className="bg-gradient-to-r from-purple-600/20 to-purple-800/20 px-6 py-4 border-b border-purple-500/30">
+            <div className="flex items-center justify-center gap-3">
+              <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+                <span className="text-sm">👑</span>
+              </div>
+              <h2 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+                Elite
+              </h2>
+            </div>
           </div>
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-gray-800 text-gray-400 text-sm">
-                <th 
-                  className="py-4 px-4 text-center cursor-pointer hover:text-gray-300 transition-colors"
-                  onClick={() => handleSort(1, 'rank')}
-                >
-                  <div className="flex items-center justify-center gap-2">
-                    # {getSortIcon('rank', sortConfig1)}
-                  </div>
-                </th>
-                <th 
-                  className="py-4 px-4 text-center cursor-pointer hover:text-gray-300 transition-colors"
-                  onClick={() => handleSort(1, 'name')}
-                >
-                  <div className="flex items-center justify-center gap-2">
-                    TRADER {getSortIcon('name', sortConfig1)}
-                  </div>
-                </th>
-                <th 
-                  className="py-4 px-4 text-center cursor-pointer hover:text-gray-300 transition-colors"
-                  onClick={() => handleSort(1, 'pointsEarned')}
-                >
-                  <div className="flex items-center justify-center gap-2">
-                    POINTS EARNED {getSortIcon('pointsEarned', sortConfig1)}
-                  </div>
-                </th>
-                <th className="py-4 px-4 text-center">BADGE</th>
-              </tr>
-            </thead>
-            <tbody>
-              {sortedLeaderboard1.map((entry) => (
-                <tr key={entry.rank} className="border-b border-gray-800 hover:bg-[#1a1f2b] transition-colors">
-                  <td className="py-4 px-4 text-center text-gray-300">{entry.rank}</td>
-                  <td className="py-4 px-4">
-                    <div className="flex items-center justify-center gap-3">
-                      <div className="w-8 h-8 rounded-full overflow-hidden">
-                        <img 
-                          src={entry.avatar} 
-                          alt={entry.name}
-                          className="w-full h-full object-cover"
-                          onError={(e) => {
-                            e.currentTarget.src = '';
-                          }}
-                        />
-                      </div>
-                      <div className="text-center">
-                        <div className="text-gray-200">{entry.name}</div>
-                      </div>
+          <div className="overflow-hidden">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-purple-500/20 text-gray-300 text-sm">
+                  <th 
+                    className="py-4 px-4 text-center cursor-pointer hover:text-purple-300 transition-colors"
+                    onClick={() => handleSort(1, 'rank')}
+                  >
+                    <div className="flex items-center justify-center gap-2">
+                      # {getSortIcon('rank', sortConfig1)}
                     </div>
-                  </td>
-                  <td className="py-4 px-4 text-center text-pink-500">{entry.pointsEarned}</td>
-                  <td className="py-4 px-4 text-center text-gray-300">{entry.badge}</td>
+                  </th>
+                  <th 
+                    className="py-4 px-4 text-center cursor-pointer hover:text-purple-300 transition-colors"
+                    onClick={() => handleSort(1, 'name')}
+                  >
+                    <div className="flex items-center justify-center gap-2">
+                      TRADER {getSortIcon('name', sortConfig1)}
+                    </div>
+                  </th>
+                  <th 
+                    className="py-4 px-4 text-center cursor-pointer hover:text-purple-300 transition-colors"
+                    onClick={() => handleSort(1, 'pointsEarned')}
+                  >
+                    <div className="flex items-center justify-center gap-2">
+                      POINTS {getSortIcon('pointsEarned', sortConfig1)}
+                    </div>
+                  </th>
+                  <th className="py-4 px-4 text-center">BADGE</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {sortedLeaderboard1.map((entry, index) => (
+                  <tr key={entry.rank} className={`border-b border-purple-500/10 hover:bg-purple-500/10 transition-all duration-200 ${index === 0 ? 'bg-gradient-to-r from-yellow-500/10 to-yellow-600/10' : ''}`}>
+                    <td className="py-4 px-4 text-center">
+                      <div className={`inline-flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold ${
+                        index === 0 ? 'bg-gradient-to-br from-yellow-400 to-yellow-600 text-black' :
+                        index === 1 ? 'bg-gradient-to-br from-gray-300 to-gray-500 text-black' :
+                        index === 2 ? 'bg-gradient-to-br from-amber-600 to-amber-800 text-white' :
+                        'bg-gray-700 text-gray-300'
+                      }`}>
+                        {entry.rank}
+                      </div>
+                    </td>
+                    <td className="py-4 px-4">
+                      <div className="flex items-center justify-center gap-3">
+                        <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-purple-500/30 shadow-lg">
+                          <img 
+                            src={entry.avatar} 
+                            alt={entry.name}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              e.currentTarget.src = 'https://images.cdn.aurory.io/items/aurorian-default.png';
+                            }}
+                          />
+                        </div>
+                        <div className="text-center">
+                          <div className="text-gray-200 font-medium">{entry.name}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="py-4 px-4 text-center">
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 font-bold">
+                        {entry.pointsEarned}
+                      </span>
+                    </td>
+                    <td className="py-4 px-4 text-center text-gray-300">{entry.badge}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
-        {/* Second Leaderboard */}
-        <div className="bg-[#0d1117] rounded-lg overflow-hidden border border-gray-800">
-          <div className="bg-[#1a1f2b] px-6 py-4 border-b border-gray-800">
-            <h2 className="text-xl text-center font-semibold text-gray-200">Hunter</h2>
+        {/* Hunter Leaderboard */}
+        <div className="bg-gradient-to-br from-blue-900/20 to-cyan-800/10 rounded-xl overflow-hidden border border-blue-500/20 shadow-xl backdrop-blur-sm">
+          <div className="bg-gradient-to-r from-blue-600/20 to-cyan-800/20 px-6 py-4 border-b border-blue-500/30">
+            <div className="flex items-center justify-center gap-3">
+              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center">
+                <span className="text-sm">🏹</span>
+              </div>
+              <h2 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
+                Hunter
+              </h2>
+            </div>
           </div>
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-gray-800 text-gray-400 text-sm">
-                <th 
-                  className="py-4 px-4 text-center cursor-pointer hover:text-gray-300 transition-colors"
-                  onClick={() => handleSort(2, 'rank')}
-                >
-                  <div className="flex items-center justify-center gap-2">
-                    # {getSortIcon('rank', sortConfig2)}
-                  </div>
-                </th>
-                <th 
-                  className="py-4 px-4 text-center cursor-pointer hover:text-gray-300 transition-colors"
-                  onClick={() => handleSort(2, 'name')}
-                >
-                  <div className="flex items-center justify-center gap-2">
-                    TRADER {getSortIcon('name', sortConfig2)}
-                  </div>
-                </th>
-                <th 
-                  className="py-4 px-4 text-center cursor-pointer hover:text-gray-300 transition-colors"
-                  onClick={() => handleSort(2, 'pointsEarned')}
-                >
-                  <div className="flex items-center justify-center gap-2">
-                    POINTS EARNED {getSortIcon('pointsEarned', sortConfig2)}
-                  </div>
-                </th>
-                <th className="py-4 px-4 text-center">BADGE</th>
-              </tr>
-            </thead>
-            <tbody>
-              {sortedLeaderboard2.map((entry) => (
-                <tr key={entry.rank} className="border-b border-gray-800 hover:bg-[#1a1f2b] transition-colors">
-                  <td className="py-4 px-4 text-center text-gray-300">{entry.rank}</td>
-                  <td className="py-4 px-4">
-                    <div className="flex items-center justify-center gap-3">
-                      <div className="w-8 h-8 rounded-full overflow-hidden">
-                        <img 
-                          src={entry.avatar} 
-                          alt={entry.name}
-                          className="w-full h-full object-cover"
-                          onError={(e) => {
-                            e.currentTarget.src = '';
-                          }}
-                        />
-                      </div>
-                      <div className="text-center">
-                        <div className="text-gray-200">{entry.name}</div>
-                      </div>
+          <div className="overflow-hidden">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-blue-500/20 text-gray-300 text-sm">
+                  <th 
+                    className="py-4 px-4 text-center cursor-pointer hover:text-blue-300 transition-colors"
+                    onClick={() => handleSort(2, 'rank')}
+                  >
+                    <div className="flex items-center justify-center gap-2">
+                      # {getSortIcon('rank', sortConfig2)}
                     </div>
-                  </td>
-                  <td className="py-4 px-4 text-center text-pink-500">{entry.pointsEarned}</td>
-                  <td className="py-4 px-4 text-center text-gray-300">{entry.badge}</td>
+                  </th>
+                  <th 
+                    className="py-4 px-4 text-center cursor-pointer hover:text-blue-300 transition-colors"
+                    onClick={() => handleSort(2, 'name')}
+                  >
+                    <div className="flex items-center justify-center gap-2">
+                      TRADER {getSortIcon('name', sortConfig2)}
+                    </div>
+                  </th>
+                  <th 
+                    className="py-4 px-4 text-center cursor-pointer hover:text-blue-300 transition-colors"
+                    onClick={() => handleSort(2, 'pointsEarned')}
+                  >
+                    <div className="flex items-center justify-center gap-2">
+                      POINTS {getSortIcon('pointsEarned', sortConfig2)}
+                    </div>
+                  </th>
+                  <th className="py-4 px-4 text-center">BADGE</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {sortedLeaderboard2.map((entry, index) => (
+                  <tr key={entry.rank} className={`border-b border-blue-500/10 hover:bg-blue-500/10 transition-all duration-200 ${index === 0 ? 'bg-gradient-to-r from-yellow-500/10 to-yellow-600/10' : ''}`}>
+                    <td className="py-4 px-4 text-center">
+                      <div className={`inline-flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold ${
+                        index === 0 ? 'bg-gradient-to-br from-yellow-400 to-yellow-600 text-black' :
+                        index === 1 ? 'bg-gradient-to-br from-gray-300 to-gray-500 text-black' :
+                        index === 2 ? 'bg-gradient-to-br from-amber-600 to-amber-800 text-white' :
+                        'bg-gray-700 text-gray-300'
+                      }`}>
+                        {entry.rank}
+                      </div>
+                    </td>
+                    <td className="py-4 px-4">
+                      <div className="flex items-center justify-center gap-3">
+                        <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-blue-500/30 shadow-lg">
+                          <img 
+                            src={entry.avatar} 
+                            alt={entry.name}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              e.currentTarget.src = 'https://images.cdn.aurory.io/items/aurorian-default.png';
+                            }}
+                          />
+                        </div>
+                        <div className="text-center">
+                          <div className="text-gray-200 font-medium">{entry.name}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="py-4 px-4 text-center">
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 font-bold">
+                        {entry.pointsEarned}
+                      </span>
+                    </td>
+                    <td className="py-4 px-4 text-center text-gray-300">{entry.badge}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
