@@ -23,7 +23,7 @@ export default function Home() {
       </div>
 
       {/* Header with gradient background */}
-      <header className="relative py-12 bg-gradient-to-r from-purple-900/20 via-blue-900/20 to-pink-900/20 border-b border-gray-800/50">
+      <header className="relative py-8 sm:py-12 bg-gradient-to-r from-purple-900/20 via-blue-900/20 to-pink-900/20 border-b border-gray-800/50">
         {/* Background pattern */}
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiM5QzkyQUMiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIvPjwvZz48L2c+PC9zdmc+')] opacity-30"></div>
         
@@ -34,39 +34,32 @@ export default function Home() {
           <div className="absolute -bottom-10 left-1/3 w-32 h-32 bg-gradient-to-br from-blue-500/10 to-transparent rounded-full blur-3xl"></div>
         </div>
         
-        <div className="relative max-w-[1400px] mx-auto px-6">
+        <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6">
           <div className="text-center">
-            {/* Logo/Icon with enhanced styling */}
-            <div className="mb-6 flex justify-center">
-              <div className="relative">
-                <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center shadow-2xl animate-pulse">
-                  <span className="text-3xl">⚔️</span>
-                </div>
-                {/* Glow effect */}
-                <div className="absolute inset-0 w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full blur-xl opacity-50 animate-pulse"></div>
-              </div>
-            </div>
+
+            {/* Spacing */}
+            <div className="mb-4 sm:mb-6 flex justify-center"></div>
             
             {/* Main Title */}
-            <h1 className="text-4xl sm:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 mb-2 drop-shadow-lg">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 mb-2 drop-shadow-lg px-2">
               Seekers of Tokane : Elites Hunt
             </h1>
             
             {/* Description */}
-            <p className="text-gray-400 mt-4 max-w-2xl mx-auto text-lg">
+            <p className="text-gray-400 mt-3 sm:mt-4 max-w-2xl mx-auto text-base sm:text-lg px-4">
               Defeat the Elites to earn points and climb the leaderboard!
             </p>
             
             {/* Decorative line */}
-            <div className="mt-6 flex justify-center">
-              <div className="w-24 h-1 bg-gradient-to-r from-transparent via-purple-500 to-transparent rounded-full"></div>
+            <div className="mt-4 sm:mt-6 flex justify-center">
+              <div className="w-128 h-1 bg-gradient-to-r from-transparent via-purple-500 to-transparent rounded-full"></div>
             </div>
           </div>
         </div>
       </header>
 
       {/* Main content with enhanced styling */}
-      <main className="flex-1 p-6 relative">
+      <main className="flex-1 p-4 sm:p-6 relative">
         {/* Background decoration */}
         <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-transparent to-pink-500/5 pointer-events-none"></div>
         
@@ -80,13 +73,12 @@ export default function Home() {
       </main>
 
       {/* Enhanced Footer */}
-      <footer className="py-6 bg-gradient-to-r from-[#0d1117] to-[#1a1f2b] border-t border-gray-800/50 relative">
+      <footer className="py-4 sm:py-6 bg-gradient-to-r from-[#0d1117] to-[#1a1f2b] border-t border-gray-800/50 relative">
         {/* Footer background decoration */}
         <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 via-transparent to-pink-500/5"></div>
         
-        <div className="relative max-w-[1400px] mx-auto px-4 flex flex-col sm:flex-row justify-between items-center text-gray-400 text-sm gap-4">
+        <div className="relative max-w-[1400px] mx-auto px-4 flex flex-col sm:flex-row justify-between items-center text-gray-400 text-xs sm:text-sm gap-3 sm:gap-4">
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full animate-pulse"></div>
             <a 
               href="https://x.com/chocoo_web3" 
               target="_blank" 
@@ -97,7 +89,6 @@ export default function Home() {
             </a>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full animate-pulse" style={{animationDelay: '0.5s'}}></div>
             <a 
               href="https://app.daory.io" 
               target="_blank" 
@@ -108,7 +99,6 @@ export default function Home() {
             </a>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-gradient-to-br from-pink-500 to-red-500 rounded-full animate-pulse" style={{animationDelay: '1s'}}></div>
             <a 
               href="https://aurory.io" 
               target="_blank" 
