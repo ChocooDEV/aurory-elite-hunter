@@ -203,7 +203,11 @@ export default function LeaderboardPage() {
                 </thead>
                 <tbody>
                   {sortedLeaderboard1.map((entry, index) => (
-                    <tr key={entry.rank} className={`border-b border-purple-500/10 hover:bg-purple-500/10 transition-all duration-200 ${index === 0 ? 'bg-gradient-to-r from-yellow-500/10 to-yellow-600/10' : ''}`}>
+                    <tr 
+                      key={entry.rank} 
+                      className={`border-b border-purple-500/10 hover:bg-purple-500/10 transition-all duration-200 cursor-pointer ${index === 0 ? 'bg-gradient-to-r from-yellow-500/10 to-yellow-600/10' : ''}`}
+                      onClick={() => window.open(`https://wassie.gg/player/${encodeURIComponent(entry.name)}`, '_blank', 'noopener,noreferrer')}
+                    >
                       <td className="py-3 sm:py-4 px-2 sm:px-4 text-center">
                         <div className={`inline-flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full text-xs sm:text-sm font-bold ${
                           index === 0 ? 'bg-gradient-to-br from-yellow-400 to-yellow-600 text-black' :
@@ -304,7 +308,11 @@ export default function LeaderboardPage() {
                 </thead>
                 <tbody>
                   {sortedLeaderboard2.map((entry, index) => (
-                    <tr key={entry.rank} className={`border-b border-blue-500/10 hover:bg-blue-500/10 transition-all duration-200 ${index === 0 ? 'bg-gradient-to-r from-yellow-500/10 to-yellow-600/10' : ''}`}>
+                    <tr 
+                      key={entry.rank} 
+                      className={`border-b border-blue-500/10 hover:bg-blue-500/10 transition-all duration-200 cursor-pointer ${index === 0 ? 'bg-gradient-to-r from-yellow-500/10 to-yellow-600/10' : ''}`}
+                      onClick={() => window.open(`https://wassie.gg/player/${encodeURIComponent(entry.name)}`, '_blank', 'noopener,noreferrer')}
+                    >
                       <td className="py-3 sm:py-4 px-2 sm:px-4 text-center">
                         <div className={`inline-flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full text-xs sm:text-sm font-bold ${
                           index === 0 ? 'bg-gradient-to-br from-yellow-400 to-yellow-600 text-black' :
