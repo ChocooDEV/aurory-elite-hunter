@@ -4,6 +4,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   // Clear existing data
+  await prisma.computedMatch.deleteMany();
   await prisma.leaderboardElite.deleteMany();
   await prisma.leaderboardHunter.deleteMany();
 
@@ -11,12 +12,20 @@ async function main() {
   await prisma.leaderboardElite.createMany({
     data: [
       { 
-        name: 'FAKE ELITE', 
-        title: 'fakefakefake', 
+        name: 'VIP862924621', 
+        title: 'p-P5iW64kt0JfUKIR', 
         pointsEarned: 25, 
         pointsPerLoss: 1, 
         badge: '', 
-        avatar: 'https://aurorians.cdn.aurory.io/aurorians-v2/current/images/mini/9248.png' 
+        avatar: 'https://images.cdn.aurory.io/items/aurorian-default.png' 
+      },
+      { 
+        name: 'MontalesGOC', 
+        title: 'p-SGWM9YZ1T19lHBj', 
+        pointsEarned: 25, 
+        pointsPerLoss: 1, 
+        badge: '', 
+        avatar: 'https://aurorians.cdn.aurory.io/aurorians-v2/current/images/full/1874-sky-of-prosperity.png' 
       }
     ]
   });

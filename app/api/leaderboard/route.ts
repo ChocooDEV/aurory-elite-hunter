@@ -25,7 +25,7 @@ export async function GET() {
       orderBy: {
         pointsEarned: 'desc'
       },
-      take: 20
+      take: 100
     });
 
     // Transform the data to match your frontend interface

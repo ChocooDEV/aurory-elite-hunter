@@ -30,4 +30,14 @@ model LeaderboardHunter {
   createdAt   DateTime @default(now()) @map("created_at")
 
   @@map("leaderboard_hunter")
+}
+
+model ComputedMatch {
+  id        Int      @id @default(autoincrement())
+  matchId   String   @unique
+  eliteName String
+  hunterName String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("computed_matches")
 } 

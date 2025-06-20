@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react';
 interface LeaderboardEntry {
   rank: number;
   name: string;
-  title: string;
   pointsEarned: number;
   badge: string;
   avatar: string;
@@ -16,7 +15,7 @@ interface LeaderboardData {
   leaderboard2: LeaderboardEntry[];
 }
 
-type SortField = 'rank' | 'name' | 'title' | 'pointsEarned';
+type SortField = 'rank' | 'name' | 'pointsEarned';
 type SortDirection = 'asc' | 'desc';
 
 interface SortConfig {
@@ -80,10 +79,6 @@ export default function LeaderboardPage() {
         case 'name':
           aValue = a.name.toLowerCase();
           bValue = b.name.toLowerCase();
-          break;
-        case 'title':
-          aValue = a.title.toLowerCase();
-          bValue = b.title.toLowerCase();
           break;
         case 'pointsEarned':
           aValue = a.pointsEarned;
@@ -199,7 +194,6 @@ export default function LeaderboardPage() {
                       </div>
                       <div className="text-center">
                         <div className="text-gray-200">{entry.name}</div>
-                        <div className="text-gray-500 text-sm">{entry.title}</div>
                       </div>
                     </div>
                   </td>
@@ -264,7 +258,6 @@ export default function LeaderboardPage() {
                       </div>
                       <div className="text-center">
                         <div className="text-gray-200">{entry.name}</div>
-                        <div className="text-gray-500 text-sm">{entry.title}</div>
                       </div>
                     </div>
                   </td>
