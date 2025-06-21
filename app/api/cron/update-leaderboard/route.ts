@@ -10,7 +10,6 @@ interface Battle {
     player_name: string;
   };
   event: string;
-  data: any;
 }
 
 interface Player {
@@ -34,7 +33,7 @@ interface ApiResponse {
   };
 }
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
     // Verify the request is from Vercel Cron
    /* const authHeader = request.headers.get('authorization');
@@ -53,7 +52,7 @@ export async function GET(request: Request) {
       try {
         // Fetch all pages of matches for this Elite player
         let currentPage = 0;
-        let totalPages = 1; // Will be updated after first request
+        let totalPages = 1;
         let allBattles: Battle[] = [];
         
         do {
@@ -143,7 +142,7 @@ export async function GET(request: Request) {
           const pointsToAdd = Number(elite.pointsPerLoss);
           
           // Check if hunter already exists in LeaderboardHunter
-          let hunter = await prisma.leaderboardHunter.findFirst({
+          const hunter = await prisma.leaderboardHunter.findFirst({
             where: { name: hunterName }
           });
           

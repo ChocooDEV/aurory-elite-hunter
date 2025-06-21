@@ -1,5 +1,3 @@
-import Image from "next/image";
-// Import the leaderboard page as a component
 import LeaderboardPage from "./leaderboard/page";
 
 export default function Home() {
@@ -24,7 +22,6 @@ export default function Home() {
 
       {/* Header with gradient background */}
       <header className="relative py-16 sm:py-24 lg:py-32 bg-gradient-to-r from-purple-900/20 via-blue-900/20 to-pink-900/20 border-b border-gray-800/50">
-        {/* Background image with blur */}
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat blur-sm opacity-30"
           style={{
@@ -103,12 +100,10 @@ export default function Home() {
          </div>
        </header>
 
-      {/* Main content with enhanced styling */}
+      {/* Main content */}
       <main className="flex-1 p-4 sm:p-6 relative">
-        {/* Background decoration */}
         <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-transparent to-pink-500/5 pointer-events-none"></div>
         
-        {/* Floating elements in main content */}
         <div className="absolute top-20 right-10 w-8 h-8 border border-purple-500/30 rounded-full animate-bounce"></div>
         <div className="absolute bottom-20 left-10 w-6 h-6 border border-pink-500/30 rounded-full animate-bounce" style={{animationDelay: '1s'}}></div>
         
@@ -117,9 +112,8 @@ export default function Home() {
         </div>
       </main>
 
-      {/* Enhanced Footer */}
+      {/* Footer */}
       <footer className="py-4 sm:py-6 bg-gradient-to-r from-[#0d1117] to-[#1a1f2b] border-t border-gray-800/50 relative">
-        {/* Footer background decoration */}
         <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 via-transparent to-pink-500/5"></div>
         
         <div className="relative max-w-[1400px] mx-auto px-4 flex flex-col sm:flex-row justify-between items-center text-gray-400 text-xs sm:text-sm gap-3 sm:gap-4">

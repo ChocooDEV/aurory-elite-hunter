@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 interface Badge {
   id: string;
   name: string;
@@ -79,7 +81,7 @@ export default function BadgesPage() {
 
       {/* Back to Leaderboard Button */}
       <div className="mb-12 text-center">
-        <a 
+        <Link 
           href="/"
           className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600/20 to-cyan-600/20 border border-blue-500/30 rounded-lg text-gray-200 hover:text-white hover:bg-gradient-to-r hover:from-blue-600/30 hover:to-cyan-600/30 transition-all duration-200 font-medium"
         >
@@ -87,7 +89,7 @@ export default function BadgesPage() {
             <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
           </svg>
           Back to Leaderboard
-        </a>
+        </Link>
       </div>
 
       {/* Event Rules Section */}
@@ -153,7 +155,6 @@ export default function BadgesPage() {
               key={badge.id}
               className={`${getRarityBgColor(badge.rarity)} rounded-xl border p-6 hover:scale-105 transition-transform duration-200 cursor-pointer`}
             >
-              {/* Badge Image */}
               <div className="flex justify-center items-center mb-4 h-20 sm:h-24">
                 <img
                   src={badge.imageUrl}
@@ -165,7 +166,6 @@ export default function BadgesPage() {
                 />
               </div>
               
-              {/* Badge Info */}
               <div className="text-center space-y-2">
                 <h3 className={`font-bold text-lg ${getRarityColor(badge.rarity)}`}>
                   {badge.name}
@@ -199,11 +199,9 @@ export default function BadgesPage() {
         </p>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Top Ranks */}
           <div className="lg:col-span-2 bg-gray-900/30 rounded-lg p-6 border border-gray-700/50">
             <h3 className="font-semibold text-xl text-purple-400 mb-4">Top Ranks (1-10)</h3>
             <div className="space-y-6">
-              {/* Places 1-3 */}
               <div>
                 <h4 className="font-semibold text-lg text-gray-200 mb-2">Places 1-3</h4>
                 <p className="text-sm text-gray-400 mb-3">Includes a large Aury prize pool, Nefties and a 2x Aury bonus for Aurorian holders</p>
@@ -213,7 +211,6 @@ export default function BadgesPage() {
                   <li className="flex justify-between items-center"><span>🥉 3rd Place:</span> <span>150 AURY + 1 Epic Nefty</span></li>
                 </ul>
               </div>
-              {/* Places 4-10 */}
               <div>
                 <h4 className="font-semibold text-lg text-gray-200 mb-2">Places 4-10</h4>
                 <p className="text-sm text-gray-400 mb-3">Includes a smaller Aury prize pool, Nefties, and a 2x Aury bonus for Aurorian holders</p>
@@ -226,7 +223,6 @@ export default function BadgesPage() {
             </div>
           </div>
 
-          {/* Other Rewards */}
           <div className="bg-gray-900/30 rounded-lg p-6 border border-gray-700/50">
             <h3 className="font-semibold text-xl text-cyan-400 mb-4">Bonuses & Raffles</h3>
             <div className="space-y-6">
