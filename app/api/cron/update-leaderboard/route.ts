@@ -14,8 +14,11 @@ interface Battle {
 }
 
 interface Player {
-  name: string;
-  avatar?: string;
+  player_id: string;
+  player_name: string;
+  profile_picture: {
+    url: string;
+  };
 }
 
 interface ApiResponse {
@@ -48,23 +51,44 @@ export async function GET(request: Request) {
       console.log(`Processing matches for Elite: ${elite.name}`);
       
       try {
-        // Fetch matches for this Elite player with JUNE_2025 event filter
-        const matchesResponse = await fetch(
-          `https://aggregator-api.live.aurory.io/v1/player-matches?player_id_or_name=${encodeURIComponent(elite.name)}&order_by=created_at&direction=asc&event=JUNE_2025`
-        );
+        // Fetch all pages of matches for this Elite player
+        let currentPage = 0;
+        let totalPages = 1; // Will be updated after first request
+        let allBattles: Battle[] = [];
         
-        if (!matchesResponse.ok) {
-          console.error(`Failed to fetch matches for ${elite.name}:`, matchesResponse.status);
-          continue;
-        }
+        do {
+          console.log(`Fetching page ${currentPage + 1} for ${elite.name}...`);
+          
+          const matchesResponse = await fetch(
+            `https://aggregator-api.live.aurory.io/v1/player-matches?player_id_or_name=${encodeURIComponent(elite.name)}&order_by=created_at&direction=asc&event=JUNE_2025&page=${currentPage}`
+          );
+          
+          if (!matchesResponse.ok) {
+            console.error(`Failed to fetch matches for ${elite.name} on page ${currentPage}:`, matchesResponse.status);
+            break;
+          }
+          
+          const responseData: ApiResponse = await matchesResponse.json();
+          const battles: Battle[] = responseData.matches.data;
+          
+          // Update total pages on first request
+          if (currentPage === 0) {
+            totalPages = responseData.matches.total_pages;
+            console.log(`Total pages for ${elite.name}: ${totalPages} (${responseData.matches.total_elements} total matches)`);
+          }
+          
+          allBattles = allBattles.concat(battles);
+          currentPage++;
+          
+          // Add a small delay to avoid rate limiting
+          await new Promise(resolve => setTimeout(resolve, 100));
+          
+        } while (currentPage < totalPages);
         
-        const responseData: ApiResponse = await matchesResponse.json();
-        const battles: Battle[] = responseData.matches.data;
-        
-        console.log(`Found ${battles.length} battles for ${elite.name}`);
+        console.log(`Found ${allBattles.length} total battles for ${elite.name}`);
         
         // Process each battle
-        for (const battle of battles) {
+        for (const battle of allBattles) {
           // Skip CPU battles
           if (battle.opponent.player_name === 'CPU' || battle.opponent.id === 'CPU') {
             console.log(`Skipping CPU battle for ${elite.name}`);
@@ -84,7 +108,16 @@ export async function GET(request: Request) {
           
           // Check if Elite won or lost
           if (battle.result === 'win') {
-            // Elite won, nothing happens to points
+            // Elite won, add 1 point
+            await prisma.leaderboardElite.update({
+              where: { id: elite.id },
+              data: {
+                pointsEarned: {
+                  increment: 1
+                }
+              }
+            });
+            
             await prisma.computedMatch.create({
               data: {
                 matchId,
@@ -95,7 +128,16 @@ export async function GET(request: Request) {
             continue;
           }
           
-          // Elite lost (battle.result === 'loss'), hunter gets points
+          // Elite lost (battle.result === 'loss'), elite loses 3 points, hunter gets points
+          await prisma.leaderboardElite.update({
+            where: { id: elite.id },
+            data: {
+              pointsEarned: {
+                decrement: 3
+              }
+            }
+          });
+          
           const hunterName = battle.opponent.player_name;
           const hunterId = battle.opponent.player_id || battle.opponent.id;
           const pointsToAdd = Number(elite.pointsPerLoss);
@@ -125,7 +167,7 @@ export async function GET(request: Request) {
               
               if (playerResponse.ok) {
                 const playerData: Player = await playerResponse.json();
-                hunterAvatar = playerData.avatar || hunterAvatar;
+                hunterAvatar = playerData.profile_picture.url || hunterAvatar;
               }
               
               await prisma.leaderboardHunter.create({
@@ -151,6 +193,54 @@ export async function GET(request: Request) {
             }
           }
           
+          // === BADGE LOGIC START ===
+          const hunterForBadges = await prisma.leaderboardHunter.findFirst({
+            where: { name: hunterName }
+          });
+          
+          if (hunterForBadges) {
+            // 1. Record the win
+            await prisma.hunterWin.create({
+              data: {
+                hunterName: hunterName,
+                defeatedEliteName: elite.name
+              }
+            });
+            
+            // 2. Get all wins for the hunter
+            const allWins = await prisma.hunterWin.findMany({
+              where: { hunterName: hunterName }
+            });
+            
+            // 3. Calculate stats
+            const totalWins = allWins.length;
+            const uniqueElitesDefeated = new Set(allWins.map((w: { defeatedEliteName: string }) => w.defeatedEliteName)).size;
+            
+            // 4. Define badges in order
+            const badgeDefinitions = [
+              { url: 'https://i.imgur.com/we0BROn.png', condition: uniqueElitesDefeated >= 3 },
+              { url: 'https://i.imgur.com/eKd2RWn.png', condition: totalWins >= 5 },
+              { url: 'https://i.imgur.com/C97oxg3.png', condition: totalWins >= 30 },
+              { url: 'https://i.imgur.com/2G25sjj.png', condition: uniqueElitesDefeated >= 15 },
+            ];
+            
+            // 5. Construct the new badge string
+            const newBadges = badgeDefinitions
+              .filter(badge => badge.condition)
+              .map(badge => badge.url);
+            
+            const newBadgeString = newBadges.join(',');
+            
+            // 6. Update hunter if badges have changed
+            if (newBadgeString !== hunterForBadges.badge) {
+              await prisma.leaderboardHunter.update({
+                where: { id: hunterForBadges.id },
+                data: { badge: newBadgeString }
+              });
+            }
+          }
+          // === BADGE LOGIC END ===
+
           // Mark battle as computed
           await prisma.computedMatch.create({
             data: {

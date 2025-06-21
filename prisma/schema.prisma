@@ -40,4 +40,13 @@ model ComputedMatch {
   createdAt DateTime @default(now()) @map("created_at")
 
   @@map("computed_matches")
+}
+
+model HunterWin {
+  id                Int      @id @default(autoincrement())
+  hunterName        String
+  defeatedEliteName String
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  @@map("hunter_wins")
 } 
