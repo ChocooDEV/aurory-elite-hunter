@@ -167,6 +167,36 @@ export async function GET() {
           
           const hunterName = battle.opponent.player_name;
           const hunterId = battle.opponent.player_id || battle.opponent.id;
+          
+          // Check if the opponent is an Elite player - if so, skip Hunter points
+          const opponentIsElite = await prisma.leaderboardElite.findFirst({
+            where: { name: hunterName }
+          });
+          
+          if (opponentIsElite) {
+            console.log(`Skipping Hunter points for ${hunterName} - they are an Elite player`);
+            
+            // Give the winning Elite player 1 point
+            await prisma.leaderboardElite.update({
+              where: { id: opponentIsElite.id },
+              data: {
+                pointsEarned: {
+                  increment: 1
+                }
+              }
+            });
+            
+            // Mark battle as computed but don't give Hunter points
+            await prisma.computedMatch.create({
+              data: {
+                matchId,
+                eliteName: elite.name,
+                hunterName: hunterName
+              }
+            });
+            continue;
+          }
+          
           const pointsToAdd = Number(elite.pointsPerLoss);
           
           // Check if hunter already exists in LeaderboardHunter
