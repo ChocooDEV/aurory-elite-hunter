@@ -50,16 +50,28 @@ export async function GET() {
       console.log(`Processing matches for Elite: ${elite.name}`);
       
       try {
+        // Get the latest processed match timestamp for this Elite
+        const latestProcessedMatch = await prisma.computedMatch.findFirst({
+          where: { eliteName: elite.name },
+          orderBy: { createdAt: 'desc' },
+          select: { createdAt: true }
+        });
+        
+        // Only fetch matches newer than the last processed match
+        const sinceDate = latestProcessedMatch?.createdAt || new Date('2025-06-01T00:00:00Z');
+        console.log(`Fetching matches for ${elite.name} since ${sinceDate.toISOString()}`);
+        
         // Fetch all pages of matches for this Elite player
         let currentPage = 0;
         let totalPages = 1;
         let allBattles: Battle[] = [];
+        let hasNewMatches = false;
         
         do {
           console.log(`Fetching page ${currentPage + 1} for ${elite.name}...`);
           
           const matchesResponse = await fetch(
-            `https://aggregator-api.live.aurory.io/v1/player-matches?player_id_or_name=${encodeURIComponent(elite.name)}&order_by=created_at&direction=asc&event=JUNE_2025&page=${currentPage}`
+            `https://aggregator-api.live.aurory.io/v1/player-matches?player_id_or_name=${encodeURIComponent(elite.name)}&order_by=created_at&direction=desc&event=JUNE_2025&page=${currentPage}`
           );
           
           if (!matchesResponse.ok) {
@@ -76,7 +88,19 @@ export async function GET() {
             console.log(`Total pages for ${elite.name}: ${totalPages} (${responseData.matches.total_elements} total matches)`);
           }
           
-          allBattles = allBattles.concat(battles);
+          // Filter out old matches and stop if we hit processed matches
+          const newBattles = battles.filter(battle => {
+            const battleDate = new Date(battle.created_at);
+            return battleDate > sinceDate;
+          });
+          
+          if (newBattles.length === 0) {
+            console.log(`No new matches found for ${elite.name} on page ${currentPage + 1}, stopping pagination`);
+            break;
+          }
+          
+          allBattles = allBattles.concat(newBattles);
+          hasNewMatches = true;
           currentPage++;
           
           // Add a small delay to avoid rate limiting
@@ -84,13 +108,17 @@ export async function GET() {
           
         } while (currentPage < totalPages);
         
-        console.log(`Found ${allBattles.length} total battles for ${elite.name}`);
+        if (!hasNewMatches) {
+          console.log(`No new matches for ${elite.name}, skipping processing`);
+          continue;
+        }
+        
+        console.log(`Found ${allBattles.length} new battles for ${elite.name}`);
         
         // Process each battle
         for (const battle of allBattles) {
           // Skip CPU battles
           if (battle.opponent.player_name === 'CPU' || battle.opponent.id === 'CPU') {
-            console.log(`Skipping CPU battle for ${elite.name}`);
             continue;
           }
           
