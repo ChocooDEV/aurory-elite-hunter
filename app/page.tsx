@@ -85,8 +85,19 @@ export default function Home() {
              </p>
              
              {/* Decorative line */}
-             <div className="mt-8 sm:mt-12 flex justify-center">
+             <div className="mt-4 sm:mt-6 flex justify-center">
                <div className="w-128 h-1 bg-gradient-to-r from-transparent via-purple-500 to-transparent rounded-full"></div>
+             </div>
+             
+             {/* Navigation */}
+             <div className="mt-6 sm:mt-8 flex justify-center">
+               <a 
+                 href="/badges"
+                 className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600/20 to-pink-600/20 border border-purple-500/30 rounded-lg text-gray-200 hover:text-white hover:bg-gradient-to-r hover:from-purple-600/30 hover:to-pink-600/30 transition-all duration-200 font-medium"
+               >
+                 <span>🏆</span>
+                 View Badges & Rules
+               </a>
              </div>
            </div>
          </div>

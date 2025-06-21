@@ -242,8 +242,22 @@ export default function LeaderboardPage() {
                           {entry.pointsEarned}
                         </span>
                       </td>
-                      <td className="py-3 sm:py-4 px-2 sm:px-4 text-center text-gray-300 text-sm">
-                        {entry.badge}
+                      <td className="py-3 sm:py-4 px-2 sm:px-4 text-center">
+                        {entry.badge && (
+                          <div className="flex justify-center gap-1">
+                            {entry.badge.split(',').map((badgeUrl, badgeIndex) => (
+                              <img 
+                                key={badgeIndex}
+                                src={badgeUrl.trim()} 
+                                alt={`${entry.name} badge ${badgeIndex + 1}`}
+                                className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
+                                onError={(e) => {
+                                  e.currentTarget.style.display = 'none';
+                                }}
+                              />
+                            ))}
+                          </div>
+                        )}
                       </td>
                     </tr>
                   ))}
@@ -311,7 +325,7 @@ export default function LeaderboardPage() {
                     <tr 
                       key={entry.rank} 
                       className={`border-b border-blue-500/10 hover:bg-blue-500/10 transition-all duration-200 cursor-pointer ${index === 0 ? 'bg-gradient-to-r from-yellow-500/10 to-yellow-600/10' : ''}`}
-                      onClick={() => window.open(`https://wassie.gg/player/${encodeURIComponent(entry.name)}`, '_blank', 'noopener,noreferrer')}
+                      onClick={() => window.open(`https://neftie.gg/en/player/${encodeURIComponent(entry.name)}`, '_blank', 'noopener,noreferrer')}
                     >
                       <td className="py-3 sm:py-4 px-2 sm:px-4 text-center">
                         <div className={`inline-flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full text-xs sm:text-sm font-bold ${
@@ -347,8 +361,22 @@ export default function LeaderboardPage() {
                           {entry.pointsEarned}
                         </span>
                       </td>
-                      <td className="py-3 sm:py-4 px-2 sm:px-4 text-center text-gray-300 text-sm">
-                        {entry.badge}
+                      <td className="py-3 sm:py-4 px-2 sm:px-4 text-center">
+                        {entry.badge && (
+                          <div className="flex justify-center gap-1">
+                            {entry.badge.split(',').map((badgeUrl, badgeIndex) => (
+                              <img 
+                                key={badgeIndex}
+                                src={badgeUrl.trim()} 
+                                alt={`${entry.name} badge ${badgeIndex + 1}`}
+                                className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
+                                onError={(e) => {
+                                  e.currentTarget.style.display = 'none';
+                                }}
+                              />
+                            ))}
+                          </div>
+                        )}
                       </td>
                     </tr>
                   ))}
