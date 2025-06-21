@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { Decimal } from '@prisma/client/runtime/library';
 
 interface LeaderboardEntry {
   rank: number;
@@ -8,6 +9,16 @@ interface LeaderboardEntry {
   pointsEarned: number;
   badge: string;
   avatar: string;
+}
+
+interface DatabaseEntry {
+  id: number;
+  name: string;
+  title: string;
+  pointsEarned: Decimal;
+  badge: string;
+  avatar: string;
+  createdAt: Date;
 }
 
 export async function GET() {
@@ -29,7 +40,7 @@ export async function GET() {
     });
 
     // Transform the data to match your frontend interface
-    const transformData = (data: any[], startRank: number = 1): LeaderboardEntry[] => {
+    const transformData = (data: DatabaseEntry[], startRank: number = 1): LeaderboardEntry[] => {
       return data.map((entry, index) => ({
         rank: startRank + index,
         name: entry.name,
