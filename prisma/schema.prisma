@@ -37,7 +37,10 @@ model ComputedMatch {
   id        Int      @id @default(autoincrement())
   matchId   String   @unique
   eliteName String
-  hunterName String
+  opponentName String
+  result    String   // "elite_win", "elite_loss", "elite_vs_elite"
+  winnerName String?
+  loserName  String?
   createdAt DateTime @default(now()) @map("created_at")
 
   @@map("computed_matches")

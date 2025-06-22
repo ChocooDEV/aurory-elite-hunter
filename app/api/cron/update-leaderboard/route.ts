@@ -125,188 +125,220 @@ export async function GET() {
           // Check if we already computed this battle
           const matchId = `${elite.name}-${battle.opponent.player_id || battle.opponent.id}-${battle.created_at}`;
           
-          const existingMatch = await prisma.computedMatch.findUnique({
-            where: { matchId }
+          // Create a unique match identifier that works regardless of perspective
+          // Sort player names alphabetically to ensure consistent matchId regardless of who we're processing
+          const playerNames = [elite.name, battle.opponent.player_name].sort();
+          const uniqueMatchId = `${playerNames[0]}-vs-${playerNames[1]}-${battle.created_at}`;
+          
+          const existingMatch = await prisma.computedMatch.findFirst({
+            where: {
+              OR: [
+                { matchId },
+                { matchId: uniqueMatchId }
+              ]
+            }
           });
           
           if (existingMatch) {
+            console.log(`[${elite.name}] Skipping already processed match: ${matchId} (found existing match: ${existingMatch.matchId})`);
             continue; 
           }
           
+          const opponentName = battle.opponent.player_name;
+          const opponentId = battle.opponent.player_id || battle.opponent.id;
+          
+          // Check if the opponent is an Elite player
+          const opponentIsElite = await prisma.leaderboardElite.findFirst({
+            where: { name: opponentName }
+          });
+          
+          let matchResult: string;
+          let winnerName: string;
+          let loserName: string;
+          
           // Check if Elite won or lost
           if (battle.result === 'win') {
-            // Elite won, add 1 point
+            // Elite won
+            matchResult = 'elite_win';
+            winnerName = elite.name;
+            loserName = opponentName;
+            
+            if (opponentIsElite) {
+              // Elite vs Elite: winner gets the loser's pointsPerLoss
+              const pointsToWin = Number(opponentIsElite.pointsPerLoss);
+              console.log(`[${elite.name}] Elite vs Elite WIN: +${pointsToWin} points (against ${opponentName})`);
+              await prisma.leaderboardElite.update({
+                where: { id: elite.id },
+                data: {
+                  pointsEarned: {
+                    increment: pointsToWin
+                  }
+                }
+              });
+            } else {
+              // Elite vs Hunter: winner gets +1 point
+              console.log(`[${elite.name}] Elite vs Hunter WIN: +1 point (against ${opponentName})`);
+              await prisma.leaderboardElite.update({
+                where: { id: elite.id },
+                data: {
+                  pointsEarned: {
+                    increment: 1
+                  }
+                }
+              });
+            }
+          } else {
+            // Elite lost (battle.result === 'loss'), elite loses 3 points
+            matchResult = 'elite_loss';
+            winnerName = opponentName;
+            loserName = elite.name;
+            
+            console.log(`[${elite.name}] LOSS: -3 points (against ${opponentName})`);
             await prisma.leaderboardElite.update({
               where: { id: elite.id },
               data: {
                 pointsEarned: {
-                  increment: 1
+                  decrement: 3
                 }
               }
             });
             
-            await prisma.computedMatch.create({
-              data: {
-                matchId,
-                eliteName: elite.name,
-                hunterName: battle.opponent.player_name
-              }
-            });
-            continue;
-          }
-          
-          // Elite lost (battle.result === 'loss'), elite loses 3 points, hunter gets points
-          await prisma.leaderboardElite.update({
-            where: { id: elite.id },
-            data: {
-              pointsEarned: {
-                decrement: 3
-              }
-            }
-          });
-          
-          const hunterName = battle.opponent.player_name;
-          const hunterId = battle.opponent.player_id || battle.opponent.id;
-          
-          // Check if the opponent is an Elite player - if so, skip Hunter points
-          const opponentIsElite = await prisma.leaderboardElite.findFirst({
-            where: { name: hunterName }
-          });
-          
-          if (opponentIsElite) {
-            console.log(`Skipping Hunter points for ${hunterName} - they are an Elite player`);
-            
-            // Give the winning Elite player 1 point
-            await prisma.leaderboardElite.update({
-              where: { id: opponentIsElite.id },
-              data: {
-                pointsEarned: {
-                  increment: 1
-                }
-              }
-            });
-            
-            // Mark battle as computed but don't give Hunter points
-            await prisma.computedMatch.create({
-              data: {
-                matchId,
-                eliteName: elite.name,
-                hunterName: hunterName
-              }
-            });
-            continue;
-          }
-          
-          const pointsToAdd = Number(elite.pointsPerLoss);
-          
-          // Check if hunter already exists in LeaderboardHunter
-          const hunter = await prisma.leaderboardHunter.findFirst({
-            where: { name: hunterName }
-          });
-          
-          if (hunter) {
-            await prisma.leaderboardHunter.update({
-              where: { id: hunter.id },
-              data: {
-                pointsEarned: {
-                  increment: pointsToAdd
-                }
-              }
-            });
-          } else {
-            try {
-              // Fetch hunter details from API using player_id
-              const playerResponse = await fetch(
-                `https://aggregator-api.live.aurory.io/v2/players/${encodeURIComponent(hunterId || '')}`
-              );
-              
-              let hunterAvatar = 'https://images.cdn.aurory.io/items/aurorian-default.png';
-              
-              if (playerResponse.ok) {
-                const playerData: Player = await playerResponse.json();
-                hunterAvatar = playerData.profile_picture.url || hunterAvatar;
-              }
-              
-              await prisma.leaderboardHunter.create({
+            if (opponentIsElite) {
+              // Elite vs Elite: winning Elite gets the losing Elite's pointsPerLoss
+              const pointsToWin = Number(elite.pointsPerLoss);
+              console.log(`[${opponentName}] Elite vs Elite WIN: +${pointsToWin} points (against ${elite.name})`);
+              await prisma.leaderboardElite.update({
+                where: { id: opponentIsElite.id },
                 data: {
-                  name: hunterName,
-                  title: hunterId,
-                  pointsEarned: pointsToAdd,
-                  badge: '',
-                  avatar: hunterAvatar
+                  pointsEarned: {
+                    increment: pointsToWin
+                  }
                 }
               });
-            } catch (error) {
-              console.error(`Failed to fetch player data for ${hunterName} (${hunterId}):`, error);
-              await prisma.leaderboardHunter.create({
-                data: {
-                  name: hunterName,
-                  title: hunterId,
-                  pointsEarned: pointsToAdd,
-                  badge: '',
-                  avatar: 'https://images.cdn.aurory.io/items/aurorian-default.png'
-                }
+            } else {
+              // Opponent is a Hunter - give them points
+              const pointsToAdd = Number(elite.pointsPerLoss);
+              
+              // Check if hunter already exists in LeaderboardHunter
+              const hunter = await prisma.leaderboardHunter.findFirst({
+                where: { name: opponentName }
               });
-            }
-          }
-          
-          // === BADGE LOGIC START ===
-          const hunterForBadges = await prisma.leaderboardHunter.findFirst({
-            where: { name: hunterName }
-          });
-          
-          if (hunterForBadges) {
-            // 1. Record the win
-            await prisma.hunterWin.create({
-              data: {
-                hunterName: hunterName,
-                defeatedEliteName: elite.name
+              
+              if (hunter) {
+                await prisma.leaderboardHunter.update({
+                  where: { id: hunter.id },
+                  data: {
+                    pointsEarned: {
+                      increment: pointsToAdd
+                    }
+                  }
+                });
+              } else {
+                try {
+                  // Fetch hunter details from API using player_id
+                  const playerResponse = await fetch(
+                    `https://aggregator-api.live.aurory.io/v2/players/${encodeURIComponent(opponentId || '')}`
+                  );
+                  
+                  let hunterAvatar = 'https://images.cdn.aurory.io/items/aurorian-default.png';
+                  
+                  if (playerResponse.ok) {
+                    const playerData: Player = await playerResponse.json();
+                    hunterAvatar = playerData.profile_picture.url || hunterAvatar;
+                  }
+                  
+                  await prisma.leaderboardHunter.create({
+                    data: {
+                      name: opponentName,
+                      title: opponentId,
+                      pointsEarned: pointsToAdd,
+                      badge: '',
+                      avatar: hunterAvatar
+                    }
+                  });
+                } catch (error) {
+                  console.error(`Failed to fetch player data for ${opponentName} (${opponentId}):`, error);
+                  await prisma.leaderboardHunter.create({
+                    data: {
+                      name: opponentName,
+                      title: opponentId,
+                      pointsEarned: pointsToAdd,
+                      badge: '',
+                      avatar: 'https://images.cdn.aurory.io/items/aurorian-default.png'
+                    }
+                  });
+                }
               }
-            });
-            
-            // 2. Get all wins for the hunter
-            const allWins = await prisma.hunterWin.findMany({
-              where: { hunterName: hunterName }
-            });
-            
-            // 3. Calculate stats
-            const totalWins = allWins.length;
-            const uniqueElitesDefeated = new Set(allWins.map((w: { defeatedEliteName: string }) => w.defeatedEliteName)).size;
-            
-            // 4. Define badges in order
-            const badgeDefinitions = [
-              { url: 'https://i.imgur.com/we0BROn.png', condition: uniqueElitesDefeated >= 3 },
-              { url: 'https://i.imgur.com/eKd2RWn.png', condition: totalWins >= 5 },
-              { url: 'https://i.imgur.com/C97oxg3.png', condition: totalWins >= 30 },
-              { url: 'https://i.imgur.com/2G25sjj.png', condition: uniqueElitesDefeated >= 15 },
-            ];
-            
-            // 5. Construct the new badge string
-            const newBadges = badgeDefinitions
-              .filter(badge => badge.condition)
-              .map(badge => badge.url);
-            
-            const newBadgeString = newBadges.join(',');
-            
-            // 6. Update hunter if badges have changed
-            if (newBadgeString !== hunterForBadges.badge) {
-              await prisma.leaderboardHunter.update({
-                where: { id: hunterForBadges.id },
-                data: { badge: newBadgeString }
+              
+              // === BADGE LOGIC START ===
+              const hunterForBadges = await prisma.leaderboardHunter.findFirst({
+                where: { name: opponentName }
               });
+              
+              if (hunterForBadges) {
+                // 1. Record the win
+                await prisma.hunterWin.create({
+                  data: {
+                    hunterName: opponentName,
+                    defeatedEliteName: elite.name
+                  }
+                });
+                
+                // 2. Get all wins for the hunter
+                const allWins = await prisma.hunterWin.findMany({
+                  where: { hunterName: opponentName }
+                });
+                
+                // 3. Calculate stats
+                const totalWins = allWins.length;
+                const uniqueElitesDefeated = new Set(allWins.map((w: { defeatedEliteName: string }) => w.defeatedEliteName)).size;
+                
+                // 4. Define badges in order
+                const badgeDefinitions = [
+                  { url: 'https://i.imgur.com/we0BROn.png', condition: uniqueElitesDefeated >= 3 },
+                  { url: 'https://i.imgur.com/eKd2RWn.png', condition: totalWins >= 5 },
+                  { url: 'https://i.imgur.com/C97oxg3.png', condition: totalWins >= 30 },
+                  { url: 'https://i.imgur.com/2G25sjj.png', condition: uniqueElitesDefeated >= 15 },
+                ];
+                
+                // 5. Construct the new badge string
+                const newBadges = badgeDefinitions
+                  .filter(badge => badge.condition)
+                  .map(badge => badge.url);
+                
+                const newBadgeString = newBadges.join(',');
+                
+                // 6. Update hunter if badges have changed
+                if (newBadgeString !== hunterForBadges.badge) {
+                  await prisma.leaderboardHunter.update({
+                    where: { id: hunterForBadges.id },
+                    data: { badge: newBadgeString }
+                  });
+                }
+              }
+              // === BADGE LOGIC END ===
             }
           }
-          // === BADGE LOGIC END ===
-
-          // Mark battle as computed
+          
+          // Create the match record (only once per battle)
           await prisma.computedMatch.create({
             data: {
-              matchId,
+              matchId: uniqueMatchId,
               eliteName: elite.name,
-              hunterName: hunterName
+              opponentName: opponentName,
+              result: matchResult,
+              winnerName: winnerName,
+              loserName: loserName
             }
           });
         }
+        
+        // Log final points for this Elite
+        const finalElite = await prisma.leaderboardElite.findUnique({
+          where: { id: elite.id },
+          select: { pointsEarned: true }
+        });
+        console.log(`[${elite.name}] Final points: ${finalElite?.pointsEarned}`);
       } catch (error) {
         console.error(`Error processing Elite ${elite.name}:`, error);
         continue;
