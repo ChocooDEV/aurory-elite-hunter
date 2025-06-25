@@ -33,7 +33,7 @@ async function main() {
   console.log(`Found ${apiData.players.length} Elite players.`);
 
   // Limit to top 20 players
-  const top20Players = apiData.players.slice(0, 20);
+  const top20Players = apiData.players.slice(0, 29);
   console.log(`Limiting to top ${top20Players.length} Elite players.`);
 
   const elitePlayers = top20Players.map(p => ({
