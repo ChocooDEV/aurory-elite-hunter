@@ -40,9 +40,6 @@ export async function GET() {
     // Get all Elite players
     const elitePlayers = await prisma.leaderboardElite.findMany();
     
-    // Track all unique matches to prevent double-counting
-    const processedMatches = new Set<string>();
-    
     // Track processing stats for debugging
     const processingStats: { [eliteName: string]: { processed: number, skipped: number, points: number } } = {};
     
@@ -181,6 +178,7 @@ export async function GET() {
                       avatar: 'https://images.cdn.aurory.io/items/aurorian-default.png'
                     }
                   });
+                  console.error(`Error creating hunter: ${error}`);
                 }
               }
               
