@@ -103,7 +103,7 @@ export default function BadgesPage() {
             <ul className="space-y-3 text-gray-300">
               <li className="flex items-start gap-3">
                 <span className="text-purple-400 mt-1">•</span>
-                <span>Challenge Elite players in battles to earn points</span>
+                <span>Challenge Elite players in ranked battles to earn points</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-purple-400 mt-1">•</span>
