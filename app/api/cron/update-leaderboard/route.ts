@@ -104,19 +104,26 @@ export async function GET() {
           const playerNames = [elite.name, battle.opponent.player_name].sort();
           const uniqueMatchId = `${playerNames[0]}-vs-${playerNames[1]}-${battle.created_at}`;
           
-          // Check if we already processed this match
-          if (processedMatches.has(uniqueMatchId)) {
-            console.log(`[${elite.name}] Skipping already processed match: ${uniqueMatchId}`);
+          // Check if this match is already in computed_matches (DB check, not just in-memory)
+          const alreadyProcessed = await prisma.computedMatch.findUnique({ where: { matchId: uniqueMatchId } });
+          if (alreadyProcessed) {
             processingStats[elite.name].skipped++;
-            continue; 
+            continue;
           }
-          
-          // Mark this match as processed
-          processedMatches.add(uniqueMatchId);
           processingStats[elite.name].processed++;
           
-          console.log(`[${elite.name}] Processing match #${processingStats[elite.name].processed}: ${uniqueMatchId}`);
-          
+          // Mark this match as processed in DB
+          await prisma.computedMatch.create({
+            data: {
+              matchId: uniqueMatchId,
+              eliteName: elite.name,
+              opponentName: battle.opponent.player_name,
+              result: battle.result,
+              winnerName: battle.result === 'win' ? elite.name : battle.opponent.player_name,
+              loserName: battle.result === 'win' ? battle.opponent.player_name : elite.name
+            }
+          });
+
           const opponentName = battle.opponent.player_name;
           const opponentId = battle.opponent.player_id || battle.opponent.id;
           const opponentIsElite = await prisma.leaderboardElite.findFirst({ where: { name: opponentName } });
@@ -125,12 +132,12 @@ export async function GET() {
             // Elite vs Elite
             if (battle.result === 'win') {
               // elite wins, opponent loses
-              await prisma.leaderboardElite.update({ where: { id: elite.id }, data: { pointsEarned: { increment: 1 } } });
+              await prisma.leaderboardElite.update({ where: { id: elite.id }, data: { pointsEarned: { increment: Number(opponentIsElite.pointsPerLoss) } } });
               await prisma.leaderboardElite.update({ where: { id: opponentIsElite.id }, data: { pointsEarned: { decrement: 3 } } });
             } else {
               // elite loses, opponent wins
               await prisma.leaderboardElite.update({ where: { id: elite.id }, data: { pointsEarned: { decrement: 3 } } });
-              await prisma.leaderboardElite.update({ where: { id: opponentIsElite.id }, data: { pointsEarned: { increment: 1 } } });
+              await prisma.leaderboardElite.update({ where: { id: opponentIsElite.id }, data: { pointsEarned: { increment: Number(elite.pointsPerLoss) } } });
             }
           } else {
             // Elite vs Hunter
@@ -222,52 +229,12 @@ export async function GET() {
               // === BADGE LOGIC END ===
             }
           }
-          
-          // Create the match record (only once per battle)
-          await prisma.computedMatch.create({
-            data: {
-              matchId: uniqueMatchId,
-              eliteName: elite.name,
-              opponentName: opponentName,
-              result: battle.result,
-              winnerName: battle.result === 'win' ? elite.name : opponentName,
-              loserName: battle.result === 'win' ? opponentName : elite.name
-            }
-          });
         }
-        
-        // Log final points for this Elite
-        const finalElite = await prisma.leaderboardElite.findUnique({
-          where: { id: elite.id },
-          select: { pointsEarned: true }
-        });
-        console.log(`[${elite.name}] Final points: ${finalElite?.pointsEarned}`);
       } catch (error) {
-        console.error(`Error processing Elite ${elite.name}:`, error);
-        continue;
+        console.error(`Error processing matches for ${elite.name}:`, error);
       }
     }
-    
-    // Log processing summary
-    console.log('\n=== PROCESSING SUMMARY ===');
-    for (const [eliteName, stats] of Object.entries(processingStats)) {
-      console.log(`${eliteName}: Processed ${stats.processed} matches, Skipped ${stats.skipped} matches, Net points: ${stats.points}`);
-    }
-    console.log('=== END SUMMARY ===\n');
-    
-    // Verify points against database
-    console.log('\n=== VERIFICATION ===');
-    for (const [eliteName, stats] of Object.entries(processingStats)) {
-      const dbElite = await prisma.leaderboardElite.findFirst({
-        where: { name: eliteName },
-        select: { pointsEarned: true }
-      });
-      const dbPoints = dbElite?.pointsEarned || 0;
-      const discrepancy = Number(dbPoints) - stats.points;
-      console.log(`${eliteName}: Calculated ${stats.points}, Database ${dbPoints}, Discrepancy: ${discrepancy}`);
-    }
-    console.log('=== END VERIFICATION ===\n');
-    
+
     console.log('Leaderboard update completed successfully');
     return NextResponse.json({ 
       success: true, 
