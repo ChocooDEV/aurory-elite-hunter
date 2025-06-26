@@ -35,12 +35,6 @@ interface ApiResponse {
 
 export async function GET() {
   try {
-    // Verify the request is from Vercel Cron
-   /* const authHeader = request.headers.get('authorization');
-    if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-*/
     console.log('Starting leaderboard update...');
 
     // Get all Elite players
@@ -57,6 +51,14 @@ export async function GET() {
       console.log(`Processing matches for Elite: ${elite.name}`);
       
       try {
+        // Get the latest processed match timestamp for this Elite
+        const latestMatch = await prisma.computedMatch.findFirst({
+          where: { eliteName: elite.name },
+          orderBy: { createdAt: 'desc' },
+          select: { createdAt: true }
+        });
+        const sinceDate = latestMatch?.createdAt ? new Date(latestMatch.createdAt) : new Date('2025-06-01T00:00:00Z');
+
         // Fetch all pages of matches for this Elite player
         let currentPage = 0;
         let totalPages = 1;
@@ -91,10 +93,12 @@ export async function GET() {
           
         } while (currentPage < totalPages);
         
-        console.log(`Found ${allBattles.length} total battles for ${elite.name}`);
+        // Now filter and process only new matches
+        const newBattles = allBattles.filter(battle => new Date(battle.created_at) > sinceDate);
+        console.log(`Found ${newBattles.length} new battles for ${elite.name}`);
         
-        // Process each battle
-        for (const battle of allBattles) {
+        // Process each new battle
+        for (const battle of newBattles) {
           // Skip CPU battles
           if (battle.opponent.player_name === 'CPU' || battle.opponent.id === 'CPU') {
             continue;
