@@ -132,7 +132,7 @@ export default function BadgesPage() {
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-blue-400 mt-1">•</span>
-                <span>Elite loss against Hunter: -3 points</span>
+                <span>Elite loss against Hunter or Elite: -3 points</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-blue-400 mt-1">•</span>
