@@ -51,6 +51,71 @@ async function main() {
   });
   console.log('Inserted Elite players into the database.');
 
+  // Insert special guest player
+  await prisma.leaderboardElite.create({
+    data: {
+      name: 'tim',
+      title: 'p-YugPNYWMFYKiETC',
+      pointsEarned: 0,
+      pointsPerLoss: 1,
+      badge: '',
+      avatar: 'https://aurorians.cdn.aurory.io/aurorians-v2/current/images/mini/5455.png'
+    }
+  });
+  await prisma.leaderboardElite.create({
+    data: {
+      name: 'FarmerJoe',
+      title: 'p-J74bOoXvMD0ghBl',
+      pointsEarned: 0,
+      pointsPerLoss: 1,
+      badge: '',
+      avatar: 'https://aurorians.cdn.aurory.io/aurorians-v2/current/images/mini/9985.png'
+    }
+  });
+  await prisma.leaderboardElite.create({
+    data: {
+      name: 'kandaroshi',
+      title: 'p-R8tIvjZhzRtEaUm',
+      pointsEarned: 0,
+      pointsPerLoss: 1,
+      badge: '',
+      avatar: 'https://aurorians.cdn.aurory.io/aurorians-v2/current/images/full/3027-halloween-village.png'
+    }
+  });
+  await prisma.leaderboardElite.create({
+    data: {
+      name: 'DeGenZardGoC',
+      title: 'p-J8cW6cxS4sX0KaM',
+      pointsEarned: 0,
+      pointsPerLoss: 1,
+      badge: '',
+      avatar: 'https://aurorians.cdn.aurory.io/aurorians-v2/current/images/full/8368.png'
+    }
+  });  
+  await prisma.leaderboardElite.create({
+    data: {
+      name: 'gummer',
+      title: 'p-qx45PyEUImPIRGk',
+      pointsEarned: 0,
+      pointsPerLoss: 1,
+      badge: '',
+      avatar: 'https://aurorians.cdn.aurory.io/aurorians-v2/current/images/mini/9248.png'
+    }
+  });
+  await prisma.leaderboardElite.create({
+    data: {
+      name: 'Myr',
+      title: 'p-MJ6hRRaieUuCiut',
+      pointsEarned: 0,
+      pointsPerLoss: 1,
+      badge: '',
+      avatar: 'https://aurorians.cdn.aurory.io/aurorians-v2/current/images/mini/9248.png'
+    }
+  });
+
+
+  console.log('Inserted special guest Elite players into the database.');
+
   // Insert Hunter data
   await prisma.leaderboardHunter.createMany({
     data: [
