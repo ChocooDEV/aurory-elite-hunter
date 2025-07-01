@@ -112,7 +112,16 @@ async function main() {
       avatar: 'https://aurorians.cdn.aurory.io/aurorians-v2/current/images/mini/9248.png'
     }
   });
-
+  await prisma.leaderboardElite.create({
+    data: {
+      name: 'OdinVikings',
+      title: 'p-T9LJk7J0BSOnxzI',
+      pointsEarned: 0,
+      pointsPerLoss: 1,
+      badge: '',
+      avatar: 'https://aurorians.cdn.aurory.io/aurorians-v2/current/images/full/6788-electric-frost.png'
+    }
+  });
 
   console.log('Inserted special guest Elite players into the database.');
 
