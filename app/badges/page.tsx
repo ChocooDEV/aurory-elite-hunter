@@ -204,20 +204,20 @@ export default function BadgesPage() {
             <div className="space-y-6">
               <div>
                 <h4 className="font-semibold text-lg text-gray-200 mb-2">Places 1-3</h4>
-                <p className="text-sm text-gray-400 mb-3">Includes a large Aury prize pool, Nefties and a 2x Aury bonus for Aurorian holders</p>
+                <p className="text-sm text-gray-400 mb-3">Includes a large Aury prize pool and a 2x Aury bonus for Aurorian holders</p>
                 <ul className="space-y-2 text-sm">
-                  <li className="flex justify-between items-center"><span>🥇 1st Place:</span> <span>300 AURY + 2 Epic Nefties</span></li>
-                  <li className="flex justify-between items-center"><span>🥈 2nd Place:</span> <span>200 AURY + 1 Epic & 1 3-Star Nefty</span></li>
-                  <li className="flex justify-between items-center"><span>🥉 3rd Place:</span> <span>150 AURY + 1 Epic Nefty</span></li>
+                  <li className="flex justify-between items-center"><span>🥇 1st Place:</span> <span>300 AURY</span></li>
+                  <li className="flex justify-between items-center"><span>🥈 2nd Place:</span> <span>200 AURY</span></li>
+                  <li className="flex justify-between items-center"><span>🥉 3rd Place:</span> <span>150 AURY</span></li>
                 </ul>
               </div>
-              <div>
+              <div>a
                 <h4 className="font-semibold text-lg text-gray-200 mb-2">Places 4-10</h4>
-                <p className="text-sm text-gray-400 mb-3">Includes a smaller Aury prize pool, Nefties, and a 2x Aury bonus for Aurorian holders</p>
+                <p className="text-sm text-gray-400 mb-3">Includes a smaller Aury prize pool and a 2x Aury bonus for Aurorian holders</p>
                 <ul className="space-y-2 text-sm">
-                  <li className="flex justify-between items-center"><span>4th - 5th:</span> <span>100 AURY + 3 3-Star Nefties</span></li>
-                  <li className="flex justify-between items-center"><span>6th - 8th:</span> <span>50 AURY + 1 3-Star & 1 2-Star Nefty</span></li>
-                  <li className="flex justify-between items-center"><span>9th - 10th:</span> <span>30 AURY + 1 3-Star Nefty</span></li>
+                  <li className="flex justify-between items-center"><span>4th - 5th:</span> <span>100 AURY</span></li>
+                  <li className="flex justify-between items-center"><span>6th - 8th:</span> <span>50 AURY</span></li>
+                  <li className="flex justify-between items-center"><span>9th - 10th:</span> <span>30 AURY</span></li>
                 </ul>
               </div>
             </div>
@@ -232,11 +232,15 @@ export default function BadgesPage() {
               </div>
               <div>
                 <h4 className="font-semibold text-lg text-gray-200 mb-2">Holder Raffle</h4>
-                <p className="text-sm text-gray-400">All participating Aurorian holders will be entered into a raffle to win a free Aurorian</p>
+                <p className="text-sm text-gray-400">Top 100 participating Aurorian holders will enter a huge raffle to win lots of AURY and Epic Nefties</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-lg text-gray-200 mb-2">Non-holder Raffle</h4>
+                <p className="text-sm text-gray-400">Top 50 participating non-Aurorian holders will enter an Aurorian raffle with two Aurorians up for grabs</p>
               </div>
               <div>
                 <h4 className="font-semibold text-lg text-gray-200 mb-2">Holder Bonus</h4>
-                <p className="text-sm text-gray-400">Top 10 players in each leaderboard who hold an Aurorian will receive Nefties and a 2x Aury multiplier on their prize</p>
+                <p className="text-sm text-gray-400">Top 10 players in each leaderboard who hold an Aurorian will receive a 2x Aury multiplier on their prize</p>
               </div>
             </div>
           </div>
