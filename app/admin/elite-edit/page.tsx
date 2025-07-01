@@ -6,7 +6,6 @@ interface Elite {
   name: string;
   pointsPerLoss: number;
   badge: string;
-  [key: string]: any;
 }
 
 export default function EliteAdminPage() {
