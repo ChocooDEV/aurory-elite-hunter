@@ -54,7 +54,7 @@ export async function GET() {
           orderBy: { createdAt: 'desc' },
           select: { createdAt: true }
         });
-        const sinceDate = latestMatch?.createdAt ? new Date(latestMatch.createdAt) : new Date('2025-06-01T00:00:00Z');
+        const sinceDate = latestMatch?.createdAt ? new Date(latestMatch.createdAt) : new Date('2025-07-01T00:00:00Z');
 
         // Fetch all pages of matches for this Elite player
         let currentPage = 0;
@@ -65,7 +65,7 @@ export async function GET() {
           console.log(`Fetching page ${currentPage + 1} for ${elite.name}...`);
           
           const matchesResponse = await fetch(
-            `https://aggregator-api.live.aurory.io/v1/player-matches?player_id_or_name=${encodeURIComponent(elite.name)}&order_by=created_at&direction=desc&event=JUNE_2025&page=${currentPage}`
+            `https://aggregator-api.live.aurory.io/v1/player-matches?player_id_or_name=${encodeURIComponent(elite.name)}&order_by=created_at&direction=desc&event=JULY_2025&page=${currentPage}`
           );
           
           if (!matchesResponse.ok) {
