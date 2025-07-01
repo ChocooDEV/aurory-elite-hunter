@@ -33,6 +33,38 @@ interface ApiResponse {
   };
 }
 
+const eliteSpecialPeriods: {
+  [eliteName: string]: { start: Date; end: Date }[];
+} = {
+  kandaroshi: [
+    { start: new Date('2025-07-12T15:00:00Z'), end: new Date('2025-07-12T17:00:00Z') }
+  ],
+  OdinVikings: [
+    { start: new Date('2025-07-15T14:00:00Z'), end: new Date('2025-07-15T16:00:00Z') }
+  ],
+  Myr: [
+    { start: new Date('2025-07-18T23:00:00Z'), end: new Date('2025-07-19T01:00:00Z') }
+  ],
+  Tim: [
+    { start: new Date('2025-07-21T17:00:00Z'), end: new Date('2025-07-21T19:00:00Z') }
+  ],
+  gummer: [
+    { start: new Date('2025-07-24T16:00:00Z'), end: new Date('2025-07-24T18:00:00Z') }
+  ],
+  DeGenZardGoC: [
+    { start: new Date('2025-07-27T18:00:00Z'), end: new Date('2025-07-27T20:00:00Z') }
+  ],
+  FarmerJoe: [
+    { start: new Date('2025-07-30T19:00:00Z'), end: new Date('2025-07-30T21:00:00Z') }
+  ]
+};
+
+function isInSpecialPeriod(eliteName: string, matchDate: Date): boolean {
+  const periods = eliteSpecialPeriods[eliteName];
+  if (!periods) return false;
+  return periods.some(period => matchDate >= period.start && matchDate <= period.end);
+}
+
 export async function GET() {
   try {
     console.log('Starting leaderboard update...');
@@ -129,16 +161,26 @@ export async function GET() {
           const opponentId = battle.opponent.player_id || battle.opponent.id;
           const opponentIsElite = await prisma.leaderboardElite.findFirst({ where: { name: opponentName } });
 
+          // --- Special period logic ---
+          const matchDate = new Date(battle.created_at);
+          const useSpecialPointsPerLoss = isInSpecialPeriod(elite.name, matchDate);
+          const pointsPerLossForThisMatch = useSpecialPointsPerLoss ? 5 : Number(elite.pointsPerLoss);
+          // --- End special period logic ---
+
           if (opponentIsElite) {
             // Elite vs Elite
             if (battle.result === 'win') {
               // elite wins, opponent loses
-              await prisma.leaderboardElite.update({ where: { id: elite.id }, data: { pointsEarned: { increment: Number(opponentIsElite.pointsPerLoss) } } });
+              const opponentSpecial = isInSpecialPeriod(opponentIsElite.name, matchDate);
+              const opponentPointsPerLoss = opponentSpecial ? 5 : Number(opponentIsElite.pointsPerLoss);
+              await prisma.leaderboardElite.update({ where: { id: elite.id }, data: { pointsEarned: { increment: opponentPointsPerLoss } } });
               await prisma.leaderboardElite.update({ where: { id: opponentIsElite.id }, data: { pointsEarned: { decrement: 3 } } });
             } else {
               // elite loses, opponent wins
+              const eliteSpecial = isInSpecialPeriod(elite.name, matchDate);
+              const elitePointsPerLoss = eliteSpecial ? 5 : Number(elite.pointsPerLoss);
               await prisma.leaderboardElite.update({ where: { id: elite.id }, data: { pointsEarned: { decrement: 3 } } });
-              await prisma.leaderboardElite.update({ where: { id: opponentIsElite.id }, data: { pointsEarned: { increment: Number(elite.pointsPerLoss) } } });
+              await prisma.leaderboardElite.update({ where: { id: opponentIsElite.id }, data: { pointsEarned: { increment: elitePointsPerLoss } } });
             }
           } else {
             // Elite vs Hunter
@@ -147,7 +189,7 @@ export async function GET() {
             } else {
               await prisma.leaderboardElite.update({ where: { id: elite.id }, data: { pointsEarned: { decrement: 3 } } });
               // Hunter points logic (as before)
-              const pointsToAdd = Number(elite.pointsPerLoss);
+              const pointsToAdd = pointsPerLossForThisMatch;
               const hunter = await prisma.leaderboardHunter.findFirst({ where: { name: opponentName } });
               if (hunter) {
                 await prisma.leaderboardHunter.update({ where: { id: hunter.id }, data: { pointsEarned: { increment: pointsToAdd } } });
