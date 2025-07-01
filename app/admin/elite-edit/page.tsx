@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 
 interface Elite {
   name: string;
@@ -27,7 +27,7 @@ export default function EliteAdminPage() {
       });
   }, []);
 
-  const handleSelect = (e: any) => {
+  const handleSelect = (e: ChangeEvent<HTMLSelectElement>) => {
     const name = e.target.value;
     setSelected(name);
     const elite = elites.find((el) => el.name === name);
@@ -35,7 +35,7 @@ export default function EliteAdminPage() {
     setBadge(elite?.badge ?? '');
   };
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setMessage('');
