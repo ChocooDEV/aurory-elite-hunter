@@ -7,7 +7,7 @@ export async function GET() {
   try {
     const elitePlayers = await prisma.leaderboardElite.findMany();
     return NextResponse.json(elitePlayers);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Failed to fetch elite players' }, { status: 500 });
   }
 }
