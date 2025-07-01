@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Aurory Elites Hunt
+
+Defeat the Elites to earn points and climb the leaderboard!
+
+This is a full-stack Next.js app for the Aurory Elites Hunt event, featuring a real-time leaderboard, badge system, and admin tools. Players can challenge Elite players, earn points, and unlock badges by achieving milestones. The app uses Prisma with PostgreSQL for data management and Supabase for additional integrations.
+
+## Features
+
+- **Leaderboard**: Live leaderboards for both Elites and Hunters, with ranks, points, badges, and avatars.
+- **Badges**: Earn unique badges by defeating Elites or reaching win milestones. Badges are displayed on the leaderboard and badge page.
+- **Admin Panel**: Secure admin page to edit Elite player properties (points per loss, badges, etc.).
+- **Automated Updates**: Cron job fetches match data from the Aurory API and updates points, badges, and player stats.
+- **Event Rules & Rewards**: Dedicated page explaining event rules, badge requirements, and prize structure.
+
+## Tech Stack
+
+- [Next.js](https://nextjs.org/) (App Router)
+- [React](https://react.dev/)
+- [Prisma ORM](https://www.prisma.io/) with PostgreSQL
+- [Supabase](https://supabase.com/) (optional integrations)
+- [Tailwind CSS](https://tailwindcss.com/) for styling
 
 ## Getting Started
 
-First, run the development server:
+1. **Install dependencies:**
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+2. **Set up your environment:**
+   - Copy `.env.example` to `.env` and fill in your database and Supabase credentials.
+   - Example variables:
+     - `DATABASE_URL=postgresql://...`
+     - `SUPABASE_URL=...`
+     - `SUPABASE_ANON_KEY=...`
+     - `ADMIN_PASSWORD=your_admin_password`
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. **Run database migrations and seed data:**
+   ```bash
+   npx prisma migrate deploy
+   npm run db:seed
+   ```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+4. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project Structure
 
-## Learn More
+- `app/` — Next.js app directory (pages, API routes, admin, leaderboard, badges)
+- `prisma/` — Prisma schema and seed scripts
+- `lib/` — Database and Supabase client setup
+- `public/` — Static assets (badge images, icons)
 
-To learn more about Next.js, take a look at the following resources:
+## API Endpoints
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `/api/leaderboard` — Get leaderboard data for Elites and Hunters
+- `/api/admin/update-elite` — Admin: update Elite player properties (POST)
+- `/api/admin/update-elite` — Admin: get all Elite players (GET)
+- `/api/cron/update-leaderboard` — Cron job: update leaderboard from external API
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Event Rules & Badges
 
-## Deploy on Vercel
+See the [Badges & Rules page](http://localhost:3000/badges) in the app for full details on how to earn points and badges, and the event's prize structure.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
