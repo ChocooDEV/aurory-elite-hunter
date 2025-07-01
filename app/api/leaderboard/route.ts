@@ -28,7 +28,7 @@ export async function GET() {
       orderBy: {
         pointsEarned: 'desc'
       },
-      take: 25
+      take: 100
     });
 
     // Fetch Hunter leaderboard data using Prisma
