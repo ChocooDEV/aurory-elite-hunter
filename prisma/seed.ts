@@ -122,6 +122,16 @@ async function main() {
       avatar: 'https://aurorians.cdn.aurory.io/aurorians-v2/current/images/full/6788-electric-frost.png'
     }
   });
+  await prisma.leaderboardElite.create({
+    data: {
+      name: 'JohnnyAurory',
+      title: 'p-I7hKgDqaZLaB8Uq',
+      pointsEarned: 0,
+      pointsPerLoss: 1,
+      badge: '',
+      avatar: 'https://images.cdn.aurory.io/items/aurorian-default.png'
+    }
+  });
 
   console.log('Inserted special guest Elite players into the database.');
 

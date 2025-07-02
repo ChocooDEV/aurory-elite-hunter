@@ -42,6 +42,9 @@ const eliteSpecialPeriods: {
   OdinVikings: [
     { start: new Date('2025-07-15T14:00:00Z'), end: new Date('2025-07-15T16:00:00Z') }
   ],
+  JohnnyAurory: [
+    { start: new Date('2025-07-15T21:00:00Z'), end: new Date('2025-07-15T23:00:00Z') }
+  ],
   Myr: [
     { start: new Date('2025-07-18T23:00:00Z'), end: new Date('2025-07-19T01:00:00Z') }
   ],
