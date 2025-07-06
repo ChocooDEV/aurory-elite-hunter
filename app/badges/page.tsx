@@ -97,7 +97,7 @@ export default function BadgesPage() {
         <h2 className="text-2xl sm:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-6">
           Event Rules
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="space-y-4">
             <h3 className="text-xl font-semibold text-gray-200 mb-3">How to Participate</h3>
             <ul className="space-y-3 text-gray-300">
@@ -139,6 +139,30 @@ export default function BadgesPage() {
                 <span>Some Elites have bonus on them, when you win against them you will get more points</span>
               </li>
             </ul>
+          </div>
+          <div className="space-y-4">
+            <h3 className="text-xl font-semibold text-gray-200 mb-3">Extra LB Rules</h3>
+            <ul className="space-y-3 text-gray-300">
+              <li className="flex items-start gap-3">
+                <span className="text-pink-400 mt-1">•</span>
+                <span>Have fun and stay friendly. Fair play and good games.</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-pink-400 mt-1">•</span>
+                <span>No win trading - helping friends win or lose matches is strictly forbidden.</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-pink-400 mt-1">•</span>
+                <span>No multi-accounting. Each player only participate with one account.</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-pink-400 mt-1">•</span>
+                <span>No Aurorian transfers to friends' accounts. Transferring assets to gain an advantage is not allowed.</span>
+              </li>
+            </ul>
+            <div className="text-sm text-red-400 font-semibold mt-2">
+              Violations of these rules will result in a ban from the event.
+            </div>
           </div>
         </div>
       </div>
