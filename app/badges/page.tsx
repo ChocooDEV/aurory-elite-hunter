@@ -157,7 +157,7 @@ export default function BadgesPage() {
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-pink-400 mt-1">•</span>
-                <span>No Aurorian transfers to friends' accounts. Transferring assets to gain an advantage is not allowed.</span>
+                <span>No Aurorian transfers to friends&apos; accounts. Transferring assets to gain an advantage is not allowed.</span>
               </li>
             </ul>
             <div className="text-sm text-red-400 font-semibold mt-2">
