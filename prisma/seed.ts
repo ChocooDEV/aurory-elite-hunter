@@ -72,7 +72,7 @@ async function main() {
       avatar: 'https://aurorians.cdn.aurory.io/aurorians-v2/current/images/mini/9985.png'
     }
   });
-  await prisma.leaderboardElite.create({
+ /* await prisma.leaderboardElite.create({
     data: {
       name: 'kandaroshi',
       title: 'p-R8tIvjZhzRtEaUm',
@@ -81,7 +81,7 @@ async function main() {
       badge: '',
       avatar: 'https://aurorians.cdn.aurory.io/aurorians-v2/current/images/full/3027-halloween-village.png'
     }
-  });
+  });*/
   await prisma.leaderboardElite.create({
     data: {
       name: 'DeGenZardGoC',
@@ -112,7 +112,7 @@ async function main() {
       avatar: 'https://aurorians.cdn.aurory.io/aurorians-v2/current/images/mini/9248.png'
     }
   });
-  await prisma.leaderboardElite.create({
+ /* await prisma.leaderboardElite.create({
     data: {
       name: 'OdinVikings',
       title: 'p-T9LJk7J0BSOnxzI',
@@ -121,7 +121,7 @@ async function main() {
       badge: '',
       avatar: 'https://aurorians.cdn.aurory.io/aurorians-v2/current/images/full/6788-electric-frost.png'
     }
-  });
+  });*/
   await prisma.leaderboardElite.create({
     data: {
       name: 'JohnnyAurory',

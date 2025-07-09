@@ -10,14 +10,11 @@ const INTERVAL_MS = 3 * 60 * 60 * 1000; // 3 hours
 const eliteSpecialPeriods: {
   [eliteName: string]: { start: Date; end: Date }[];
 } = {
-  kandaroshi: [
-    { start: new Date('2025-07-12T15:00:00Z'), end: new Date('2025-07-12T17:00:00Z') }
-  ],
   OdinVikings: [
-    { start: new Date('2025-07-15T14:00:00Z'), end: new Date('2025-07-15T16:00:00Z') }
-  ],  
+    { start: new Date('2025-07-12T14:00:00Z'), end: new Date('2025-07-12T16:00:00Z') }
+  ],
   JohnnyAurory: [
-    { start: new Date('2025-07-15T21:00:00Z'), end: new Date('2025-07-15T23:00:00Z') }
+    { start: new Date('2025-07-15T20:00:00Z'), end: new Date('2025-07-15T22:00:00Z') }
   ],
   Myr: [
     { start: new Date('2025-07-18T23:00:00Z'), end: new Date('2025-07-19T01:00:00Z') }

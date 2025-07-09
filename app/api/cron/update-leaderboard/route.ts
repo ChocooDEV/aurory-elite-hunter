@@ -36,11 +36,8 @@ interface ApiResponse {
 const eliteSpecialPeriods: {
   [eliteName: string]: { start: Date; end: Date }[];
 } = {
-  kandaroshi: [
-    { start: new Date('2025-07-12T15:00:00Z'), end: new Date('2025-07-12T17:00:00Z') }
-  ],
   OdinVikings: [
-    { start: new Date('2025-07-15T14:00:00Z'), end: new Date('2025-07-15T16:00:00Z') }
+    { start: new Date('2025-07-12T14:00:00Z'), end: new Date('2025-07-12T16:00:00Z') }
   ],
   JohnnyAurory: [
     { start: new Date('2025-07-15T21:00:00Z'), end: new Date('2025-07-15T23:00:00Z') }
@@ -89,7 +86,7 @@ export async function GET() {
           orderBy: { createdAt: 'desc' },
           select: { createdAt: true }
         });
-        const sinceDate = latestMatch?.createdAt ? new Date(latestMatch.createdAt) : new Date('2025-07-01T00:00:00Z');
+        const sinceDate = latestMatch?.createdAt ? new Date(latestMatch.createdAt) : new Date('2025-07-10T00:00:00Z');
 
         // Fetch all pages of matches for this Elite player
         let currentPage = 0;
@@ -126,7 +123,10 @@ export async function GET() {
         } while (currentPage < totalPages);
         
         // Now filter and process only new matches
-        const newBattles = allBattles.filter(battle => new Date(battle.created_at) > sinceDate);
+        const cutoffDate = new Date('2025-07-10T00:00:00Z');
+        const newBattles = allBattles.filter(
+          battle => new Date(battle.created_at) > sinceDate && new Date(battle.created_at) >= cutoffDate
+        );
         console.log(`Found ${newBattles.length} new battles for ${elite.name}`);
         
         // Process each new battle
