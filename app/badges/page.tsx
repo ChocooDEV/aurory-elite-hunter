@@ -230,19 +230,19 @@ export default function BadgesPage() {
                       <div>
                         <h4 className="font-semibold text-lg text-gray-200 mb-2">Places 1-3</h4>
                         <p className="text-sm text-gray-400 mb-3">Includes a large Aury prize pool and a 2x Aury bonus for Aurorian holders</p>
-                        <ul className="space-y-2 text-sm">
-                          <li className="flex justify-between items-center"><span>🥇 1st Place:</span> <span>300 AURY</span></li>
-                          <li className="flex justify-between items-center"><span>🥈 2nd Place:</span> <span>200 AURY</span></li>
-                          <li className="flex justify-between items-center"><span>🥉 3rd Place:</span> <span>150 AURY</span></li>
+                        <ul className="space-y-2 text-sm text-gray-300">
+                          <li className="flex justify-between items-center"><span>🥇 1st Place: 300 AURY</span></li>
+                          <li className="flex justify-between items-center"><span>🥈 2nd Place: 200 AURY</span></li>
+                          <li className="flex justify-between items-center"><span>🥉 3rd Place: 150 AURY</span></li>
                         </ul>
                       </div>
-                      <div>a
+                      <div>
                         <h4 className="font-semibold text-lg text-gray-200 mb-2">Places 4-10</h4>
                         <p className="text-sm text-gray-400 mb-3">Includes a smaller Aury prize pool and a 2x Aury bonus for Aurorian holders</p>
-                        <ul className="space-y-2 text-sm">
-                          <li className="flex justify-between items-center"><span>4th - 5th:</span> <span>100 AURY</span></li>
-                          <li className="flex justify-between items-center"><span>6th - 8th:</span> <span>50 AURY</span></li>
-                          <li className="flex justify-between items-center"><span>9th - 10th:</span> <span>30 AURY</span></li>
+                        <ul className="space-y-2 text-sm text-gray-300">
+                          <li className="flex justify-between items-center"><span>4th - 5th: 100 AURY</span></li>
+                          <li className="flex justify-between items-center"><span>6th - 8th: 50 AURY</span></li>
+                          <li className="flex justify-between items-center"><span>9th - 10th: 30 AURY</span></li>
                         </ul>
                       </div>
                     </div>
