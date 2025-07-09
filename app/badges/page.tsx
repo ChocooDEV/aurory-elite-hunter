@@ -68,208 +68,211 @@ const getRarityBgColor = (rarity: Badge['rarity']) => {
 
 export default function BadgesPage() {
   return (
-    <div className="w-full max-w-[1400px] mx-auto px-4 py-8">
-      {/* Header */}
-      <div className="text-center mb-12">
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 mb-4">
-          Event Badges & Rules
-        </h1>
-        <p className="text-gray-400 text-lg sm:text-xl max-w-3xl mx-auto">
-          Discover the badges you can earn and understand how the Elite Hunt event works
-        </p>
-      </div>
-
-      {/* Back to Leaderboard Button */}
-      <div className="mb-12 text-center">
-        <Link 
-          href="/"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600/20 to-cyan-600/20 border border-blue-500/30 rounded-lg text-gray-200 hover:text-white hover:bg-gradient-to-r hover:from-blue-600/30 hover:to-cyan-600/30 transition-all duration-200 font-medium"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
-          </svg>
-          Back to Leaderboard
-        </Link>
-      </div>
-
-      {/* Event Rules Section */}
-      <div className="bg-gradient-to-br from-purple-900/20 to-purple-800/10 rounded-xl border border-purple-500/20 p-6 sm:p-8 mb-12">
-        <h2 className="text-2xl sm:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-6">
-          Event Rules
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-gray-200 mb-3">How to Participate</h3>
-            <ul className="space-y-3 text-gray-300">
-              <li className="flex items-start gap-3">
-                <span className="text-purple-400 mt-1">•</span>
-                <span>Challenge Elite players in ranked battles to earn points</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-purple-400 mt-1">•</span>
-                <span>Win battles to climb the leaderboard rankings</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-purple-400 mt-1">•</span>
-                <span>Earn badges by achieving specific milestones</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-purple-400 mt-1">•</span>
-                <span>Compete in both Elite and Hunter categories depending on your ranking pre-event</span>
-              </li>
-            </ul>
-          </div>
-          <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-gray-200 mb-3">Scoring System</h3>
-            <ul className="space-y-3 text-gray-300">
-              <li className="flex items-start gap-3">
-                <span className="text-blue-400 mt-1">•</span>
-                <span>Win against Elite (for Hunter): +1 points</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-blue-400 mt-1">•</span>
-                <span>Win against Hunter (for Elite): +1 points</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-blue-400 mt-1">•</span>
-                <span>Elite loss against Hunter or Elite: -3 points</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-blue-400 mt-1">•</span>
-                <span>Some Elites have bonus on them, when you win against them you will get more points</span>
-              </li>
-            </ul>
-          </div>
-          <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-gray-200 mb-3">Extra LB Rules</h3>
-            <ul className="space-y-3 text-gray-300">
-              <li className="flex items-start gap-3">
-                <span className="text-pink-400 mt-1">•</span>
-                <span>Have fun and stay friendly. Fair play and good games.</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-pink-400 mt-1">•</span>
-                <span>No win trading - helping friends win or lose matches is strictly forbidden.</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-pink-400 mt-1">•</span>
-                <span>No multi-accounting. Each player only participate with one account.</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-pink-400 mt-1">•</span>
-                <span>No Aurorian transfers to friends&apos; accounts. Transferring assets to gain an advantage is not allowed.</span>
-              </li>
-            </ul>
-            <div className="text-sm text-red-400 font-semibold mt-2">
-              Violations of these rules will result in a ban from the event.
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Badges Section */}
-      <div className="space-y-8">
-        <h2 className="text-2xl sm:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 text-center">
-          Available Badges
-        </h2>
-        
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {badges.map((badge) => (
-            <div 
-              key={badge.id}
-              className={`${getRarityBgColor(badge.rarity)} rounded-xl border p-6 hover:scale-105 transition-transform duration-200 cursor-pointer`}
-            >
-              <div className="flex justify-center items-center mb-4 h-20 sm:h-24">
-                <img
-                  src={badge.imageUrl}
-                  alt={badge.name}
-                  className="max-h-full object-contain"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = 'none';
-                  }}
-                />
-              </div>
-              
-              <div className="text-center space-y-2">
-                <h3 className={`font-bold text-lg ${getRarityColor(badge.rarity)}`}>
-                  {badge.name}
-                </h3>
-                <p className="text-gray-300 text-sm">
-                  {badge.description}
+    <div className="w-full mx-auto px-4 py-8 min-h-screen bg-gradient-to-br from-[#0a0c10] via-[#0d1117] to-[#1a1f2b]">
+      <div className='max-w-7xl mx-auto'>
+        {/* Header */}
+        <div className="text-center mb-12">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 mb-4">
+                  Event Badges & Rules
+                </h1>
+                <p className="text-gray-400 text-lg sm:text-xl max-w-3xl mx-auto">
+                  Discover the badges you can earn and understand how the Elite Hunt event works
                 </p>
-                <div className="pt-2">
-                  <span className="text-xs text-gray-400 bg-gray-800/50 px-2 py-1 rounded">
-                    {badge.requirement}
-                  </span>
+              </div>
+
+              {/* Back to Leaderboard Button */}
+              <div className="mb-12 text-center">
+                <Link 
+                  href="/"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600/20 to-cyan-600/20 border border-blue-500/30 rounded-lg text-gray-200 hover:text-white hover:bg-gradient-to-r hover:from-blue-600/30 hover:to-cyan-600/30 transition-all duration-200 font-medium"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  Back to Leaderboard
+                </Link>
+              </div>
+
+              {/* Event Rules Section */}
+              <div className="bg-gradient-to-br from-purple-900/20 to-purple-800/10 rounded-xl border border-purple-500/20 p-6 sm:p-8 mb-12">
+                <h2 className="text-2xl sm:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-6">
+                  Event Rules
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="space-y-4">
+                    <h3 className="text-xl font-semibold text-gray-200 mb-3">How to Participate</h3>
+                    <ul className="space-y-3 text-gray-300">
+                      <li className="flex items-start gap-3">
+                        <span className="text-purple-400 mt-1">•</span>
+                        <span>Challenge Elite players in ranked battles to earn points</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-purple-400 mt-1">•</span>
+                        <span>Win battles to climb the leaderboard rankings</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-purple-400 mt-1">•</span>
+                        <span>Earn badges by achieving specific milestones</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-purple-400 mt-1">•</span>
+                        <span>Compete in both Elite and Hunter categories depending on your ranking pre-event</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="space-y-4">
+                    <h3 className="text-xl font-semibold text-gray-200 mb-3">Scoring System</h3>
+                    <ul className="space-y-3 text-gray-300">
+                      <li className="flex items-start gap-3">
+                        <span className="text-blue-400 mt-1">•</span>
+                        <span>Win against Elite (for Hunter): +1 points</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-blue-400 mt-1">•</span>
+                        <span>Win against Hunter (for Elite): +1 points</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-blue-400 mt-1">•</span>
+                        <span>Elite loss against Hunter or Elite: -3 points</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-blue-400 mt-1">•</span>
+                        <span>Some Elites have bonus on them, when you win against them you will get more points</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="space-y-4">
+                    <h3 className="text-xl font-semibold text-gray-200 mb-3">Extra LB Rules</h3>
+                    <ul className="space-y-3 text-gray-300">
+                      <li className="flex items-start gap-3">
+                        <span className="text-pink-400 mt-1">•</span>
+                        <span>Have fun and stay friendly. Fair play and good games.</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-pink-400 mt-1">•</span>
+                        <span>No win trading - helping friends win or lose matches is strictly forbidden.</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-pink-400 mt-1">•</span>
+                        <span>No multi-accounting. Each player only participate with one account.</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-pink-400 mt-1">•</span>
+                        <span>No Aurorian transfers to friends&apos; accounts. Transferring assets to gain an advantage is not allowed.</span>
+                      </li>
+                    </ul>
+                    <div className="text-sm text-red-400 font-semibold mt-2">
+                      Violations of these rules will result in a ban from the event.
+                    </div>
+                  </div>
                 </div>
-                <div className="pt-1">
-                  <span className={`text-xs font-medium capitalize ${getRarityColor(badge.rarity)}`}>
-                    {badge.rarity}
-                  </span>
+              </div>
+
+              {/* Badges Section */}
+              <div className="space-y-8">
+                <h2 className="text-2xl sm:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 text-center">
+                  Available Badges
+                </h2>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {badges.map((badge) => (
+                    <div 
+                      key={badge.id}
+                      className={`${getRarityBgColor(badge.rarity)} rounded-xl border p-6 hover:scale-105 transition-transform duration-200 cursor-pointer`}
+                    >
+                      <div className="flex justify-center items-center mb-4 h-20 sm:h-24">
+                        <img
+                          src={badge.imageUrl}
+                          alt={badge.name}
+                          className="max-h-full object-contain"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).style.display = 'none';
+                          }}
+                        />
+                      </div>
+                      
+                      <div className="text-center space-y-2">
+                        <h3 className={`font-bold text-lg ${getRarityColor(badge.rarity)}`}>
+                          {badge.name}
+                        </h3>
+                        <p className="text-gray-300 text-sm">
+                          {badge.description}
+                        </p>
+                        <div className="pt-2">
+                          <span className="text-xs text-gray-400 bg-gray-800/50 px-2 py-1 rounded">
+                            {badge.requirement}
+                          </span>
+                        </div>
+                        <div className="pt-1">
+                          <span className={`text-xs font-medium capitalize ${getRarityColor(badge.rarity)}`}>
+                            {badge.rarity}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </div>
 
-      {/* Rewards Section */}
-      <div className="mt-12 bg-gradient-to-br from-blue-900/20 to-cyan-800/10 rounded-xl border border-blue-500/20 p-6 sm:p-8">
-        <h2 className="text-2xl sm:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mb-6 text-center">
-          Event Rewards
-        </h2>
-        <p className="text-center text-gray-400 mb-8">
-          The following rewards are available for both the Elite and Hunter leaderboards.
-        </p>
+              {/* Rewards Section */}
+              <div className="mt-12 bg-gradient-to-br from-blue-900/20 to-cyan-800/10 rounded-xl border border-blue-500/20 p-6 sm:p-8">
+                <h2 className="text-2xl sm:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mb-6 text-center">
+                  Event Rewards
+                </h2>
+                <p className="text-center text-gray-400 mb-8">
+                  The following rewards are available for both the Elite and Hunter leaderboards.
+                </p>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 bg-gray-900/30 rounded-lg p-6 border border-gray-700/50">
-            <h3 className="font-semibold text-xl text-purple-400 mb-4">Top Ranks (1-10)</h3>
-            <div className="space-y-6">
-              <div>
-                <h4 className="font-semibold text-lg text-gray-200 mb-2">Places 1-3</h4>
-                <p className="text-sm text-gray-400 mb-3">Includes a large Aury prize pool and a 2x Aury bonus for Aurorian holders</p>
-                <ul className="space-y-2 text-sm">
-                  <li className="flex justify-between items-center"><span>🥇 1st Place:</span> <span>300 AURY</span></li>
-                  <li className="flex justify-between items-center"><span>🥈 2nd Place:</span> <span>200 AURY</span></li>
-                  <li className="flex justify-between items-center"><span>🥉 3rd Place:</span> <span>150 AURY</span></li>
-                </ul>
-              </div>
-              <div>a
-                <h4 className="font-semibold text-lg text-gray-200 mb-2">Places 4-10</h4>
-                <p className="text-sm text-gray-400 mb-3">Includes a smaller Aury prize pool and a 2x Aury bonus for Aurorian holders</p>
-                <ul className="space-y-2 text-sm">
-                  <li className="flex justify-between items-center"><span>4th - 5th:</span> <span>100 AURY</span></li>
-                  <li className="flex justify-between items-center"><span>6th - 8th:</span> <span>50 AURY</span></li>
-                  <li className="flex justify-between items-center"><span>9th - 10th:</span> <span>30 AURY</span></li>
-                </ul>
-              </div>
-            </div>
-          </div>
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                  <div className="lg:col-span-2 bg-gray-900/30 rounded-lg p-6 border border-gray-700/50">
+                    <h3 className="font-semibold text-xl text-purple-400 mb-4">Top Ranks (1-10)</h3>
+                    <div className="space-y-6">
+                      <div>
+                        <h4 className="font-semibold text-lg text-gray-200 mb-2">Places 1-3</h4>
+                        <p className="text-sm text-gray-400 mb-3">Includes a large Aury prize pool and a 2x Aury bonus for Aurorian holders</p>
+                        <ul className="space-y-2 text-sm">
+                          <li className="flex justify-between items-center"><span>🥇 1st Place:</span> <span>300 AURY</span></li>
+                          <li className="flex justify-between items-center"><span>🥈 2nd Place:</span> <span>200 AURY</span></li>
+                          <li className="flex justify-between items-center"><span>🥉 3rd Place:</span> <span>150 AURY</span></li>
+                        </ul>
+                      </div>
+                      <div>a
+                        <h4 className="font-semibold text-lg text-gray-200 mb-2">Places 4-10</h4>
+                        <p className="text-sm text-gray-400 mb-3">Includes a smaller Aury prize pool and a 2x Aury bonus for Aurorian holders</p>
+                        <ul className="space-y-2 text-sm">
+                          <li className="flex justify-between items-center"><span>4th - 5th:</span> <span>100 AURY</span></li>
+                          <li className="flex justify-between items-center"><span>6th - 8th:</span> <span>50 AURY</span></li>
+                          <li className="flex justify-between items-center"><span>9th - 10th:</span> <span>30 AURY</span></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
 
-          <div className="bg-gray-900/30 rounded-lg p-6 border border-gray-700/50">
-            <h3 className="font-semibold text-xl text-cyan-400 mb-4">Bonuses & Raffles</h3>
-            <div className="space-y-6">
-              <div>
-                <h4 className="font-semibold text-lg text-gray-200 mb-2">Community Prizes</h4>
-                <p className="text-sm text-gray-400">A small Aury pool is reserved for the most creative social media posts (e.g., kill montages, memes)</p>
+                  <div className="bg-gray-900/30 rounded-lg p-6 border border-gray-700/50">
+                    <h3 className="font-semibold text-xl text-cyan-400 mb-4">Bonuses & Raffles</h3>
+                    <div className="space-y-6">
+                      <div>
+                        <h4 className="font-semibold text-lg text-gray-200 mb-2">Community Prizes</h4>
+                        <p className="text-sm text-gray-400">A small Aury pool is reserved for the most creative social media posts (e.g., kill montages, memes)</p>
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-lg text-gray-200 mb-2">Holder Raffle</h4>
+                        <p className="text-sm text-gray-400">Top 100 participating Aurorian holders will enter a huge raffle to win lots of AURY and Epic Nefties</p>
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-lg text-gray-200 mb-2">Non-holder Raffle</h4>
+                        <p className="text-sm text-gray-400">Top 50 participating non-Aurorian holders will enter an Aurorian raffle with two Aurorians up for grabs</p>
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-lg text-gray-200 mb-2">Holder Bonus</h4>
+                        <p className="text-sm text-gray-400">Top 10 players in each leaderboard who hold an Aurorian will receive a 2x Aury multiplier on their prize</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div>
-                <h4 className="font-semibold text-lg text-gray-200 mb-2">Holder Raffle</h4>
-                <p className="text-sm text-gray-400">Top 100 participating Aurorian holders will enter a huge raffle to win lots of AURY and Epic Nefties</p>
-              </div>
-              <div>
-                <h4 className="font-semibold text-lg text-gray-200 mb-2">Non-holder Raffle</h4>
-                <p className="text-sm text-gray-400">Top 50 participating non-Aurorian holders will enter an Aurorian raffle with two Aurorians up for grabs</p>
-              </div>
-              <div>
-                <h4 className="font-semibold text-lg text-gray-200 mb-2">Holder Bonus</h4>
-                <p className="text-sm text-gray-400">Top 10 players in each leaderboard who hold an Aurorian will receive a 2x Aury multiplier on their prize</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      </        div>
+      
     </div>
   );
 } 
